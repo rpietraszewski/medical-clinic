@@ -23,16 +23,12 @@ public class Patient {
     private String email;
     @Column(name = "PASSWORD")
     private String password;
-    @JsonProperty("id_card_no")
     @Column(name = "ID_CARD_NO", updatable = false)
     private String idCardNo;
-    @JsonProperty("first_name")
     @Column(name = "FIRST_NAME")
     private String firstName;
-    @JsonProperty("last_name")
     @Column(name = "LAST_NAME")
     private String lastName;
-    @JsonProperty("phone_number")
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
     @Column(name = "BIRTHDAY")
