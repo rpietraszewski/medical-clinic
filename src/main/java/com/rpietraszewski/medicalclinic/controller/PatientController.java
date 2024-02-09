@@ -5,6 +5,7 @@ import com.rpietraszewski.medicalclinic.model.dto.PatientCreateDTO;
 import com.rpietraszewski.medicalclinic.model.dto.PatientDTO;
 import com.rpietraszewski.medicalclinic.service.PatientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class PatientController {
         return patientService.createPatient(patientDTO);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{email}")
     public void deletePatient(@PathVariable String email) {
         patientService.deletePatient(email);
@@ -41,7 +43,7 @@ public class PatientController {
     }
 
     @PatchMapping("/{email}")
-    public PatientDTO updatePassword(@PathVariable String email, @RequestBody ChangePasswordCommandDTO changePasswordCommandDTO){
+    public PatientDTO updatePassword(@PathVariable String email, @RequestBody ChangePasswordCommandDTO changePasswordCommandDTO) {
         return patientService.updatePassword(email, changePasswordCommandDTO);
     }
 }

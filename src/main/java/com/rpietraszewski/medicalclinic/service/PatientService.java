@@ -43,12 +43,14 @@ public class PatientService {
     }
 
     public void deletePatient(String email) {
-        Patient existingPatient = patientRepository.findByEmail(email).orElseThrow(() -> new PatientNotFoundException("Patient not found for email " + email));
+        Patient existingPatient = patientRepository.findByEmail(email)
+                .orElseThrow(() -> new PatientNotFoundException("Patient not found for email " + email));
         patientRepository.delete(existingPatient);
     }
 
     public PatientDTO updatePatient(String email, PatientCreateDTO newPatientCreateDTO) {
-        Patient existingPatient = patientRepository.findByEmail(email).orElseThrow(() -> new PatientNotFoundException("Patient not found for email " + email));
+        Patient existingPatient = patientRepository.findByEmail(email)
+                .orElseThrow(() -> new PatientNotFoundException("Patient not found for email " + email));
 
         PatientValidator.validatePatient(existingPatient, newPatientCreateDTO);
         isEmailAvailable(existingPatient.getEmail(), newPatientCreateDTO.getEmail());
@@ -59,10 +61,11 @@ public class PatientService {
     }
 
     public PatientDTO updatePassword(String email, ChangePasswordCommandDTO newPassword) {
-        Patient existingPatient = patientRepository.findByEmail(email).orElseThrow(() -> new PatientNotFoundException("Patient not found for email " + email));
+        Patient existingPatient = patientRepository.findByEmail(email)
+                .orElseThrow(() -> new PatientNotFoundException("Patient not found for email " + email));
 
         if (newPassword == null || newPassword.getNewPassword() == null) {
-            throw new PatientNullFieldsException("Password cannot be null");
+            throw new PatientNullFieldsException("Provided new password cannot be empty");
         }
         existingPatient.setPassword(newPassword.getNewPassword());
         return patientMapper.patientToPatientDTO(patientRepository.save(existingPatient));

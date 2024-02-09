@@ -1,12 +1,13 @@
 package com.rpietraszewski.medicalclinic.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
-@Data
-@AllArgsConstructor
-public class PatientIdCardNoChangeException extends RuntimeException{
-    private String message;
-    private final HttpStatus httpStatus = HttpStatus.CONFLICT;
+@Getter
+@Setter
+public class PatientIdCardNoChangeException extends MedicalClinicException {
+    public PatientIdCardNoChangeException(String message) {
+        super(message, HttpStatus.CONFLICT);
+    }
 }
