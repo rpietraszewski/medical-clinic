@@ -64,6 +64,7 @@ public class PatientService {
         Patient existingPatient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new PatientNotFoundException("Patient not found for email " + email));
 
+        PatientValidator.validatePasswordChange(existingPatient, newPassword);
         if (newPassword == null || newPassword.getNewPassword() == null) {
             throw new PatientNullFieldsException("Provided new password cannot be empty");
         }

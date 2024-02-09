@@ -22,7 +22,7 @@ public class PatientController {
     }
 
     @GetMapping("/{email}")
-    public PatientDTO getPatient(@PathVariable String email) {
+    public PatientDTO getPatient(@PathVariable("email") String email) {
         return patientService.getPatient(email);
     }
 
@@ -33,17 +33,17 @@ public class PatientController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{email}")
-    public void deletePatient(@PathVariable String email) {
+    public void deletePatient(@PathVariable("email") String email) {
         patientService.deletePatient(email);
     }
 
     @PutMapping("/{email}")
-    public PatientDTO updatePatient(@PathVariable String email, @RequestBody PatientCreateDTO patientCreateDTO) {
+    public PatientDTO updatePatient(@PathVariable("email") String email, @RequestBody PatientCreateDTO patientCreateDTO) {
         return patientService.updatePatient(email, patientCreateDTO);
     }
 
     @PatchMapping("/{email}")
-    public PatientDTO updatePassword(@PathVariable String email, @RequestBody ChangePasswordCommandDTO changePasswordCommandDTO) {
+    public PatientDTO updatePassword(@PathVariable("email") String email, @RequestBody ChangePasswordCommandDTO changePasswordCommandDTO) {
         return patientService.updatePassword(email, changePasswordCommandDTO);
     }
 }
