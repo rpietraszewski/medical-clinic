@@ -2,7 +2,6 @@ package com.rpietraszewski.medicalclinic.service;
 
 import com.rpietraszewski.medicalclinic.exception.PatientEmailAlreadyExistsException;
 import com.rpietraszewski.medicalclinic.exception.PatientNotFoundException;
-import com.rpietraszewski.medicalclinic.exception.PatientNullFieldsException;
 import com.rpietraszewski.medicalclinic.mapper.PatientMapper;
 import com.rpietraszewski.medicalclinic.model.dto.ChangePasswordCommandDTO;
 import com.rpietraszewski.medicalclinic.model.dto.PatientCreateDTO;
