@@ -3,16 +3,15 @@ package com.rpietraszewski.medicalclinic.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
-public class PatientCreateDTO {
+public class DoctorCreateUpdateDTO {
     private String email;
     private String password;
-    private String idCardNo;
     private String firstName;
     private String lastName;
-    private String phoneNumber;
-    private LocalDate birthday;
+    private String specialization;
+    private Set<InstitutionCRUDDTO> institutions;
 }

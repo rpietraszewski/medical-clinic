@@ -4,7 +4,7 @@ import com.rpietraszewski.medicalclinic.exception.PatientIdCardNoChangeException
 import com.rpietraszewski.medicalclinic.exception.PatientNullFieldsException;
 import com.rpietraszewski.medicalclinic.exception.PatientPasswordSameValueException;
 import com.rpietraszewski.medicalclinic.model.dto.ChangePasswordCommandDTO;
-import com.rpietraszewski.medicalclinic.model.dto.PatientCreateDTO;
+import com.rpietraszewski.medicalclinic.model.dto.PatientCreateUpdateDTO;
 import com.rpietraszewski.medicalclinic.model.entity.Patient;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import static com.rpietraszewski.medicalclinic.MedicalApplicationHelper.patientH
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PatientValidator {
-    public static void validatePatient(Patient currentPatient, PatientCreateDTO newPatientData) {
+    public static void validatePatient(Patient currentPatient, PatientCreateUpdateDTO newPatientData) {
         if (patientHasNullFields(newPatientData)) {
             throw new PatientNullFieldsException("Provided data contain empty values");
         }
@@ -23,11 +23,11 @@ public final class PatientValidator {
         }
     }
 
-    public static void validatePasswordChange(Patient existingPatient, ChangePasswordCommandDTO newPassword){
+    public static void validatePasswordChange(Patient existingPatient, ChangePasswordCommandDTO newPassword) {
         if (newPassword == null || newPassword.getNewPassword() == null) {
             throw new PatientNullFieldsException("Provided new password cannot be empty");
         }
-        if(newPassword.getNewPassword().equals(existingPatient.getPassword())){
+        if (newPassword.getNewPassword().equals(existingPatient.getPassword())) {
             throw new PatientPasswordSameValueException("Password cannot be changed to the same value");
         }
     }

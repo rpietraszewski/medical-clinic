@@ -4,7 +4,7 @@ import com.rpietraszewski.medicalclinic.exception.PatientEmailAlreadyExistsExcep
 import com.rpietraszewski.medicalclinic.exception.PatientNotFoundException;
 import com.rpietraszewski.medicalclinic.mapper.PatientMapper;
 import com.rpietraszewski.medicalclinic.model.dto.ChangePasswordCommandDTO;
-import com.rpietraszewski.medicalclinic.model.dto.PatientCreateDTO;
+import com.rpietraszewski.medicalclinic.model.dto.PatientCreateUpdateDTO;
 import com.rpietraszewski.medicalclinic.model.dto.PatientDTO;
 import com.rpietraszewski.medicalclinic.model.entity.Patient;
 import com.rpietraszewski.medicalclinic.repository.PatientRepository;
@@ -32,12 +32,12 @@ public class PatientService {
         return patientMapper.patientToPatientDTO(patient);
     }
 
-    public PatientDTO createPatient(PatientCreateDTO patientCreateDTO) {
-        if (patientRepository.existsByEmail(patientCreateDTO.getEmail())) {
-            throw new PatientEmailAlreadyExistsException("Email already exists for email " + patientCreateDTO.getEmail());
+    public PatientDTO createPatient(PatientCreateUpdateDTO patientCreateUpdateDTO) {
+        if (patientRepository.existsByEmail(patientCreateUpdateDTO.getEmail())) {
+            throw new PatientEmailAlreadyExistsException("Email already exists for email " + patientCreateUpdateDTO.getEmail());
         }
 
-        Patient newPatient = patientMapper.patientCreateDTOToPatient(patientCreateDTO);
+        Patient newPatient = patientMapper.patientCreateUpdateDTOToPatient(patientCreateUpdateDTO);
         return patientMapper.patientToPatientDTO(patientRepository.save(newPatient));
     }
 
@@ -47,14 +47,14 @@ public class PatientService {
         patientRepository.delete(existingPatient);
     }
 
-    public PatientDTO updatePatient(String email, PatientCreateDTO newPatientCreateDTO) {
+    public PatientDTO updatePatient(String email, PatientCreateUpdateDTO newPatientCreateUpdateDTO) {
         Patient existingPatient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new PatientNotFoundException("Patient not found for email " + email));
 
-        PatientValidator.validatePatient(existingPatient, newPatientCreateDTO);
-        isEmailAvailable(existingPatient.getEmail(), newPatientCreateDTO.getEmail());
+        PatientValidator.validatePatient(existingPatient, newPatientCreateUpdateDTO);
+        isEmailChangeAvailable(existingPatient.getEmail(), newPatientCreateUpdateDTO.getEmail());
 
-        existingPatient.update(patientMapper.patientCreateDTOToPatient(newPatientCreateDTO));
+        existingPatient.update(patientMapper.patientCreateUpdateDTOToPatient(newPatientCreateUpdateDTO));
 
         return patientMapper.patientToPatientDTO(patientRepository.save(existingPatient));
     }
@@ -69,7 +69,7 @@ public class PatientService {
         return patientMapper.patientToPatientDTO(patientRepository.save(existingPatient));
     }
 
-    private void isEmailAvailable(String currentEmail, String newEmail) {
+    private void isEmailChangeAvailable(String currentEmail, String newEmail) {
         if (!newEmail.equals(currentEmail)) {
             if (patientRepository.existsByEmail(currentEmail)) {
                 throw new PatientEmailAlreadyExistsException("Email already exists for email " + newEmail);
