@@ -26,7 +26,7 @@ public class DoctorService {
 
     public List<DoctorDTO> getDoctors() {
         return doctorRepository.findAll().stream()
-                .map(doctorMapper::doctorToDoctorDTO)
+                .map(doctorMapper::toDoctorDTO)
                 .toList();
     }
 
@@ -34,7 +34,7 @@ public class DoctorService {
         Doctor doctor = doctorRepository.findByEmail(email)
                 .orElseThrow(() -> new DoctorNotFoundException("Doctor not found for email " + email));
 
-        return doctorMapper.doctorToDoctorDTO(doctor);
+        return doctorMapper.toDoctorDTO(doctor);
     }
 
     public DoctorDTO createDoctor(DoctorCreateUpdateDTO doctorCreateUpdateDTO) {
@@ -42,8 +42,8 @@ public class DoctorService {
             throw new DoctorEmailAlreadyExistsException("Email already exists for email " + doctorCreateUpdateDTO.getEmail());
         }
 
-        Doctor newDoctor = doctorMapper.doctorCreateUpdateDTOToDoctor(doctorCreateUpdateDTO);
-        return doctorMapper.doctorToDoctorDTO(doctorRepository.save(newDoctor));
+        Doctor newDoctor = doctorMapper.toDoctor(doctorCreateUpdateDTO);
+        return doctorMapper.toDoctorDTO(doctorRepository.save(newDoctor));
     }
 
     public void deleteDoctor(String email) {
@@ -52,18 +52,18 @@ public class DoctorService {
         doctorRepository.delete(existingDoctor);
     }
 
-    public DoctorDTO assignInstitutionToDoctor(String email, AssignInstitutionCommandDTO name) {
+    public DoctorDTO assignInstitutionToDoctor(String email, AssignInstitutionCommandDTO assignInstitutionCommandDTO) {
         Doctor existingDoctor = doctorRepository.findByEmail(email)
                 .orElseThrow(() -> new DoctorNotFoundException("Doctor not found for email" + email));
 
-        DoctorValidator.validateNullAssignInstitution(name);
-        Institution existingInstitution = institutionRepository.findByName(name.getName())
-                .orElseThrow(() -> new InstitutionNotFoundException("Institution not found for name " + name));
+        DoctorValidator.validateNullAssignInstitution(assignInstitutionCommandDTO);
+        Institution existingInstitution = institutionRepository.findByName(assignInstitutionCommandDTO.getName())
+                .orElseThrow(() -> new InstitutionNotFoundException("Institution not found for name " + assignInstitutionCommandDTO.getName()));
 
         DoctorValidator.validateAssignInstitutionExists(existingDoctor, existingInstitution);
 
         existingDoctor.getInstitutions().add(existingInstitution);
 
-        return doctorMapper.doctorToDoctorDTO(doctorRepository.save(existingDoctor));
+        return doctorMapper.toDoctorDTO(doctorRepository.save(existingDoctor));
     }
 }

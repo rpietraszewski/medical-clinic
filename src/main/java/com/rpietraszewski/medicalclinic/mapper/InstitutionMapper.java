@@ -1,12 +1,14 @@
 package com.rpietraszewski.medicalclinic.mapper;
 
-import com.rpietraszewski.medicalclinic.model.dto.InstitutionCRUDDTO;
+import com.rpietraszewski.medicalclinic.model.dto.InstitutionCreateDTO;
+import com.rpietraszewski.medicalclinic.model.dto.InstitutionDTO;
 import com.rpietraszewski.medicalclinic.model.entity.Institution;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface InstitutionMapper {
-    InstitutionCRUDDTO institutionToInstitutionCRUDDTO(Institution institution);
+    InstitutionDTO toInstitutionDTO(Institution institution);
 
-    Institution institutionCRUDDTOToInstitution(InstitutionCRUDDTO institutionCRUDDTO);
+    Institution toInstitution(InstitutionDTO institutionDTO);
+    Institution toInstitution(InstitutionCreateDTO institutionCreateDTO);
 }

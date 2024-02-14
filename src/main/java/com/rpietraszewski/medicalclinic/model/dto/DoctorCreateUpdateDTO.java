@@ -1,5 +1,6 @@
 package com.rpietraszewski.medicalclinic.model.dto;
 
+import com.rpietraszewski.medicalclinic.enums.DoctorSpecialization;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,6 +13,6 @@ public class DoctorCreateUpdateDTO {
     private String password;
     private String firstName;
     private String lastName;
-    private String specialization;
-    private Set<InstitutionCRUDDTO> institutions;
+    private DoctorSpecialization specialization;
+    private Set<InstitutionDTO> institutions;
 }

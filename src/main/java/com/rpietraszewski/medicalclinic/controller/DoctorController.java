@@ -38,7 +38,7 @@ public class DoctorController {
     }
 
     @PatchMapping("/{email}")
-    public DoctorDTO assignInstitutionToDoctor(@PathVariable("email") String email, @RequestBody AssignInstitutionCommandDTO name) {
-        return doctorService.assignInstitutionToDoctor(email, name);
+    public DoctorDTO assignInstitutionToDoctor(@PathVariable("email") String email, @RequestBody AssignInstitutionCommandDTO assignInstitutionCommandDTO) {
+        return doctorService.assignInstitutionToDoctor(email, assignInstitutionCommandDTO);
     }
 }

@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Data
 @AllArgsConstructor
-public class InstitutionCRUDDTO {
+public class InstitutionCreateDTO {
     private String name;
     private String city;
     private String zipCode;

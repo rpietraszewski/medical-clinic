@@ -3,6 +3,7 @@ package com.rpietraszewski.medicalclinic.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -17,8 +18,7 @@ import java.util.Set;
 public class Institution {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "INSTITUTION_ID")
-    private Long institutionId;
+    private Long id;
     @Column(name = "NAME", unique = true)
     private String name;
     @Column(name = "CITY")
@@ -30,7 +30,7 @@ public class Institution {
     @Column(name = "BUILDING_NUMBER")
     private String buildingNumber;
     @ManyToMany(mappedBy = "institutions")
-    private Set<Doctor> doctors;
+    private Set<Doctor> doctors = new HashSet<>();
 
     public void update(Institution institution) {
         this.name = institution.getName();

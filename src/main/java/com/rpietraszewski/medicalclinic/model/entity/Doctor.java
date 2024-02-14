@@ -1,8 +1,10 @@
 package com.rpietraszewski.medicalclinic.model.entity;
 
+import com.rpietraszewski.medicalclinic.enums.DoctorSpecialization;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -17,8 +19,7 @@ import java.util.Set;
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "DOCTOR_ID")
-    private Long doctorId;
+    private Long id;
     @Column(name = "EMAIL", unique = true)
     private String email;
     @Column(name = "PASSWORD")
@@ -28,13 +29,13 @@ public class Doctor {
     @Column(name = "LAST_NAME")
     private String lastName;
     @Column(name = "SPECIALIZATION")
-    private String specialization;
+    private DoctorSpecialization specialization;
     @ManyToMany
     @JoinTable(
             name = "DOCTOR_INSTITUTION",
             joinColumns = @JoinColumn(name = "DOCTOR_ID"),
             inverseJoinColumns = @JoinColumn(name = "INSTITUTION_ID"))
-    private Set<Institution> institutions;
+    private Set<Institution> institutions = new HashSet<>();
 
     public void update(Doctor doctor) {
         this.email = doctor.getEmail();

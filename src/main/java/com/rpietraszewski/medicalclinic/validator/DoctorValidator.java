@@ -9,7 +9,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class DoctorValidator {
+public final class DoctorValidator {
     public static void validateNullAssignInstitution(AssignInstitutionCommandDTO institution) {
         if (institution == null || institution.getName() == null) {
             throw new DoctorNullFieldsException("Provided institution name cannot be null");

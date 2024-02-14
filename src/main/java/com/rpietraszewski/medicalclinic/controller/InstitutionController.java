@@ -1,6 +1,7 @@
 package com.rpietraszewski.medicalclinic.controller;
 
-import com.rpietraszewski.medicalclinic.model.dto.InstitutionCRUDDTO;
+import com.rpietraszewski.medicalclinic.model.dto.InstitutionCreateDTO;
+import com.rpietraszewski.medicalclinic.model.dto.InstitutionDTO;
 import com.rpietraszewski.medicalclinic.service.InstitutionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,18 +16,18 @@ public class InstitutionController {
     private final InstitutionService institutionService;
 
     @GetMapping
-    public List<InstitutionCRUDDTO> getInstitutions() {
+    public List<InstitutionDTO> getInstitutions() {
         return institutionService.getInstitutions();
     }
 
-    @GetMapping("/{name}")
-    public InstitutionCRUDDTO getInstitution(@PathVariable("name") String name) {
-        return institutionService.getInstitution(name);
+    @GetMapping("/{id}")
+    public InstitutionDTO getInstitution(@PathVariable("id") Long id) {
+        return institutionService.getInstitution(id);
     }
 
     @PostMapping
-    public InstitutionCRUDDTO createInstitution(@RequestBody InstitutionCRUDDTO institutionCRUDDTO) {
-        return institutionService.createInstitution(institutionCRUDDTO);
+    public InstitutionDTO createInstitution(@RequestBody InstitutionCreateDTO institutionCreateDTO) {
+        return institutionService.createInstitution(institutionCreateDTO);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

@@ -22,14 +22,14 @@ public class PatientService {
 
     public List<PatientDTO> getPatients() {
         return patientRepository.findAll().stream()
-                .map(patientMapper::patientToPatientDTO)
+                .map(patientMapper::toPatientDTO)
                 .toList();
     }
 
     public PatientDTO getPatient(String email) {
         Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new PatientNotFoundException("Patient not found for email " + email));
-        return patientMapper.patientToPatientDTO(patient);
+        return patientMapper.toPatientDTO(patient);
     }
 
     public PatientDTO createPatient(PatientCreateUpdateDTO patientCreateUpdateDTO) {
@@ -37,8 +37,8 @@ public class PatientService {
             throw new PatientEmailAlreadyExistsException("Email already exists for email " + patientCreateUpdateDTO.getEmail());
         }
 
-        Patient newPatient = patientMapper.patientCreateUpdateDTOToPatient(patientCreateUpdateDTO);
-        return patientMapper.patientToPatientDTO(patientRepository.save(newPatient));
+        Patient newPatient = patientMapper.toPatient(patientCreateUpdateDTO);
+        return patientMapper.toPatientDTO(patientRepository.save(newPatient));
     }
 
     public void deletePatient(String email) {
@@ -54,9 +54,9 @@ public class PatientService {
         PatientValidator.validatePatient(existingPatient, newPatientCreateUpdateDTO);
         isEmailChangeAvailable(existingPatient.getEmail(), newPatientCreateUpdateDTO.getEmail());
 
-        existingPatient.update(patientMapper.patientCreateUpdateDTOToPatient(newPatientCreateUpdateDTO));
+        existingPatient.update(patientMapper.toPatient(newPatientCreateUpdateDTO));
 
-        return patientMapper.patientToPatientDTO(patientRepository.save(existingPatient));
+        return patientMapper.toPatientDTO(patientRepository.save(existingPatient));
     }
 
     public PatientDTO updatePassword(String email, ChangePasswordCommandDTO newPassword) {
@@ -66,7 +66,7 @@ public class PatientService {
         PatientValidator.validatePasswordChange(existingPatient, newPassword);
 
         existingPatient.setPassword(newPassword.getNewPassword());
-        return patientMapper.patientToPatientDTO(patientRepository.save(existingPatient));
+        return patientMapper.toPatientDTO(patientRepository.save(existingPatient));
     }
 
     private void isEmailChangeAvailable(String currentEmail, String newEmail) {

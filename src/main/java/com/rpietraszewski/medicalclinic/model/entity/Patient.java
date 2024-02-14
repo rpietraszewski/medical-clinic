@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long patientId;
+    private Long id;
     @Column(name = "EMAIL", unique = true)
     private String email;
     @Column(name = "PASSWORD")

@@ -3,7 +3,8 @@ package com.rpietraszewski.medicalclinic.service;
 import com.rpietraszewski.medicalclinic.exception.InstitutionNameAlreadyExistsException;
 import com.rpietraszewski.medicalclinic.exception.InstitutionNotFoundException;
 import com.rpietraszewski.medicalclinic.mapper.InstitutionMapper;
-import com.rpietraszewski.medicalclinic.model.dto.InstitutionCRUDDTO;
+import com.rpietraszewski.medicalclinic.model.dto.InstitutionCreateDTO;
+import com.rpietraszewski.medicalclinic.model.dto.InstitutionDTO;
 import com.rpietraszewski.medicalclinic.model.entity.Institution;
 import com.rpietraszewski.medicalclinic.repository.InstitutionRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,26 +18,26 @@ public class InstitutionService {
     private final InstitutionRepository institutionRepository;
     private final InstitutionMapper institutionMapper;
 
-    public List<InstitutionCRUDDTO> getInstitutions() {
+    public List<InstitutionDTO> getInstitutions() {
         return institutionRepository.findAll().stream()
-                .map(institutionMapper::institutionToInstitutionCRUDDTO)
+                .map(institutionMapper::toInstitutionDTO)
                 .toList();
     }
 
-    public InstitutionCRUDDTO getInstitution(String name) {
-        Institution institution = institutionRepository.findByName(name)
-                .orElseThrow(() -> new InstitutionNameAlreadyExistsException("Institution not found for name " + name));
+    public InstitutionDTO getInstitution(Long id) {
+        Institution institution = institutionRepository.findById(id)
+                .orElseThrow(() -> new InstitutionNotFoundException("Institution not found for id " + id));
 
-        return institutionMapper.institutionToInstitutionCRUDDTO(institution);
+        return institutionMapper.toInstitutionDTO(institution);
     }
 
-    public InstitutionCRUDDTO createInstitution(InstitutionCRUDDTO institutionCRUDDTO) {
-        if (institutionRepository.existsByName(institutionCRUDDTO.getName())) {
-            throw new InstitutionNameAlreadyExistsException("Name already exists for name " + institutionCRUDDTO.getName());
+    public InstitutionDTO createInstitution(InstitutionCreateDTO institutionCreateDTO) {
+        if (institutionRepository.existsByName(institutionCreateDTO.getName())) {
+            throw new InstitutionNameAlreadyExistsException("Name already exists for name " + institutionCreateDTO.getName());
         }
 
-        Institution newInstitution = institutionMapper.institutionCRUDDTOToInstitution(institutionCRUDDTO);
-        return institutionMapper.institutionToInstitutionCRUDDTO(institutionRepository.save(newInstitution));
+        Institution newInstitution = institutionMapper.toInstitution(institutionCreateDTO);
+        return institutionMapper.toInstitutionDTO(institutionRepository.save(newInstitution));
     }
 
     public void deleteInstitution(String name) {
