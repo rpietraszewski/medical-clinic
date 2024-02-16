@@ -3,7 +3,7 @@ package com.rpietraszewski.medicalclinic.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -14,5 +14,5 @@ public class InstitutionDTO {
     private String zipCode;
     private String street;
     private String buildingNumber;
-    private Set<DoctorDTO> doctors;
+    private List<Long> doctors;
 }

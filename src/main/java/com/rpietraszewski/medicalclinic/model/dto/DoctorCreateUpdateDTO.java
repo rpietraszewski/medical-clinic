@@ -4,8 +4,6 @@ import com.rpietraszewski.medicalclinic.enums.DoctorSpecialization;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Set;
-
 @Data
 @AllArgsConstructor
 public class DoctorCreateUpdateDTO {
@@ -14,5 +12,4 @@ public class DoctorCreateUpdateDTO {
     private String firstName;
     private String lastName;
     private DoctorSpecialization specialization;
-    private Set<InstitutionDTO> institutions;
 }
