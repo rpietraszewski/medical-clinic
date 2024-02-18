@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -13,5 +14,5 @@ public class DoctorDTO {
     private String firstName;
     private String lastName;
     private DoctorSpecialization specialization;
-    private List<Long> institutions;
+    private Set<Long> institutions;
 }

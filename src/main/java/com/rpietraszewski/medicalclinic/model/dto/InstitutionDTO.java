@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -14,5 +15,5 @@ public class InstitutionDTO {
     private String zipCode;
     private String street;
     private String buildingNumber;
-    private List<Long> doctors;
+    private Set<Long> doctors;
 }
