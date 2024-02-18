@@ -12,6 +12,7 @@ import com.rpietraszewski.medicalclinic.model.entity.Institution;
 import com.rpietraszewski.medicalclinic.repository.DoctorRepository;
 import com.rpietraszewski.medicalclinic.repository.InstitutionRepository;
 import com.rpietraszewski.medicalclinic.validator.DoctorValidator;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,7 @@ public class DoctorService {
         return doctorMapper.toDoctorDTO(doctor);
     }
 
+    @Transactional
     public DoctorDTO createDoctor(DoctorCreateUpdateDTO doctorCreateUpdateDTO) {
         if (doctorRepository.existsByEmail(doctorCreateUpdateDTO.getEmail())) {
             throw new DoctorEmailAlreadyExistsException("Email already exists for email " + doctorCreateUpdateDTO.getEmail());
@@ -52,6 +54,7 @@ public class DoctorService {
         doctorRepository.delete(existingDoctor);
     }
 
+    @Transactional
     public DoctorDTO assignInstitutionToDoctor(String email, AssignInstitutionCommandDTO assignInstitutionCommandDTO) {
         Doctor existingDoctor = doctorRepository.findByEmail(email)
                 .orElseThrow(() -> new DoctorNotFoundException("Doctor not found for email" + email));

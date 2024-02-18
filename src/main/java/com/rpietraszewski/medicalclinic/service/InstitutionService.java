@@ -7,6 +7,7 @@ import com.rpietraszewski.medicalclinic.model.dto.InstitutionCreateDTO;
 import com.rpietraszewski.medicalclinic.model.dto.InstitutionDTO;
 import com.rpietraszewski.medicalclinic.model.entity.Institution;
 import com.rpietraszewski.medicalclinic.repository.InstitutionRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class InstitutionService {
         return institutionMapper.toInstitutionDTO(institution);
     }
 
+    @Transactional
     public InstitutionDTO createInstitution(InstitutionCreateDTO institutionCreateDTO) {
         if (institutionRepository.existsByName(institutionCreateDTO.getName())) {
             throw new InstitutionNameAlreadyExistsException("Name already exists for name " + institutionCreateDTO.getName());

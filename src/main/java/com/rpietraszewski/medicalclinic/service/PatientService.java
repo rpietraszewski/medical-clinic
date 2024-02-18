@@ -9,6 +9,7 @@ import com.rpietraszewski.medicalclinic.model.dto.PatientDTO;
 import com.rpietraszewski.medicalclinic.model.entity.Patient;
 import com.rpietraszewski.medicalclinic.repository.PatientRepository;
 import com.rpietraszewski.medicalclinic.validator.PatientValidator;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ public class PatientService {
         return patientMapper.toPatientDTO(patient);
     }
 
+    @Transactional
     public PatientDTO createPatient(PatientCreateUpdateDTO patientCreateUpdateDTO) {
         if (patientRepository.existsByEmail(patientCreateUpdateDTO.getEmail())) {
             throw new PatientEmailAlreadyExistsException("Email already exists for email " + patientCreateUpdateDTO.getEmail());
@@ -47,6 +49,7 @@ public class PatientService {
         patientRepository.delete(existingPatient);
     }
 
+    @Transactional
     public PatientDTO updatePatient(String email, PatientCreateUpdateDTO newPatientCreateUpdateDTO) {
         Patient existingPatient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new PatientNotFoundException("Patient not found for email " + email));
@@ -59,6 +62,7 @@ public class PatientService {
         return patientMapper.toPatientDTO(patientRepository.save(existingPatient));
     }
 
+    @Transactional
     public PatientDTO updatePassword(String email, ChangePasswordCommandDTO newPassword) {
         Patient existingPatient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new PatientNotFoundException("Patient not found for email " + email));
