@@ -1,18 +1,15 @@
 package com.rpietraszewski.medicalclinic.model.dto;
 
+import com.rpietraszewski.medicalclinic.enums.DoctorSpecialization;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDate;
-
 @Data
 @AllArgsConstructor
-public class PatientCreateDTO {
+public class DoctorCreateUpdateDTO {
     private String email;
     private String password;
-    private String idCardNo;
     private String firstName;
     private String lastName;
-    private String phoneNumber;
-    private LocalDate birthday;
+    private DoctorSpecialization specialization;
 }

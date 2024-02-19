@@ -1,7 +1,7 @@
 package com.rpietraszewski.medicalclinic.controller;
 
 import com.rpietraszewski.medicalclinic.model.dto.ChangePasswordCommandDTO;
-import com.rpietraszewski.medicalclinic.model.dto.PatientCreateDTO;
+import com.rpietraszewski.medicalclinic.model.dto.PatientCreateUpdateDTO;
 import com.rpietraszewski.medicalclinic.model.dto.PatientDTO;
 import com.rpietraszewski.medicalclinic.service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class PatientController {
     }
 
     @PostMapping
-    public PatientDTO createPatient(@RequestBody PatientCreateDTO patientDTO) {
+    public PatientDTO createPatient(@RequestBody PatientCreateUpdateDTO patientDTO) {
         return patientService.createPatient(patientDTO);
     }
 
@@ -38,8 +38,8 @@ public class PatientController {
     }
 
     @PutMapping("/{email}")
-    public PatientDTO updatePatient(@PathVariable("email") String email, @RequestBody PatientCreateDTO patientCreateDTO) {
-        return patientService.updatePatient(email, patientCreateDTO);
+    public PatientDTO updatePatient(@PathVariable("email") String email, @RequestBody PatientCreateUpdateDTO patientDTO) {
+        return patientService.updatePatient(email, patientDTO);
     }
 
     @PatchMapping("/{email}")

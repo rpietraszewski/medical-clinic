@@ -1,0 +1,21 @@
+package com.rpietraszewski.medicalclinic.enums;
+
+public enum DoctorSpecialization {
+    GENERAL_PRACTITIONER,
+    CARDIOLOGIST,
+    DERMATOLOGIST,
+    GYNECOLOGIST,
+    NEUROLOGIST,
+    ORTHOPEDIST,
+    PEDIATRICIAN,
+    PSYCHIATRIST,
+    SURGEON,
+    UROLOGIST,
+    ONCOLOGIST,
+    OPTHALMOLOGIST,
+    OTOLARYNGOLOGIST,
+    DENTIST,
+    PHYSIOTHERAPIST,
+    PSYCHOLOGIST,
+    OTHER
+}

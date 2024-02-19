@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
 import java.time.LocalDate;
 
 @RestControllerAdvice
@@ -39,6 +40,42 @@ public class MedicalClinicExceptionHandler extends ResponseEntityExceptionHandle
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(PatientPasswordSameValueException.class)
     protected MessageDTO onPatientPasswordSameValueErrorHandler(PatientPasswordSameValueException ex) {
+        return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(DoctorEmailAlreadyExistsException.class)
+    protected MessageDTO onDoctorEmailAlreadyExistsErrorHandler(DoctorEmailAlreadyExistsException ex) {
+        return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(DoctorNotFoundException.class)
+    protected MessageDTO onDoctorNotFoundErrorHandler(DoctorNotFoundException ex) {
+        return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DoctorNullFieldsException.class)
+    protected MessageDTO onDoctorNullFieldsErrorHandler(DoctorNullFieldsException ex) {
+        return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(DoctorInstitutionAlreadyAssignedException.class)
+    protected MessageDTO onDoctorInstitutionAlreadyAssignedErrorHandler(DoctorInstitutionAlreadyAssignedException ex) {
+        return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(InstitutionNameAlreadyExistsException.class)
+    protected MessageDTO onInstitutionNameAlreadyExistsErrorHandler(InstitutionNameAlreadyExistsException ex) {
+        return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(InstitutionNotFoundException.class)
+    protected MessageDTO onInstitutionNotFoundErrorHandler(InstitutionNotFoundException ex) {
         return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
     }
 }

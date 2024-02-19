@@ -2,8 +2,8 @@ package com.rpietraszewski.medicalclinic.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class PatientPasswordSameValueException extends MedicalClinicException {
-    public PatientPasswordSameValueException(String message) {
+public class InstitutionNameAlreadyExistsException extends MedicalClinicException {
+    public InstitutionNameAlreadyExistsException(String message) {
         super(message, HttpStatus.CONFLICT);
     }
 }
