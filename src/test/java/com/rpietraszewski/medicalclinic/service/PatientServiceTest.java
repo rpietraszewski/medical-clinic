@@ -202,7 +202,7 @@ public class PatientServiceTest {
 
         PatientDTO result = patientService.updatePassword("patient@patient.pl", changePasswordCommandDTO);
 
-
+        assertEquals("newPassword", patient.getPassword());
         verify(patientRepository).save(patient);
     }
 }
