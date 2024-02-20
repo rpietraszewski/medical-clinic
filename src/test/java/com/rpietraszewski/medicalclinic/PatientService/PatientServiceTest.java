@@ -144,7 +144,6 @@ public class PatientServiceTest {
 
         patientService.deletePatient("patient@patient.pl");
 
-        // ????????
         verify(patientRepository).delete(patient);
     }
 
@@ -203,7 +202,6 @@ public class PatientServiceTest {
 
         PatientDTO result = patientService.updatePassword("patient@patient.pl", changePasswordCommandDTO);
 
-        // ????????
         verify(patientRepository).save(patient);
     }
 }
