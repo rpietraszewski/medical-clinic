@@ -1,4 +1,4 @@
-package com.rpietraszewski.medicalclinic.DoctorService;
+package com.rpietraszewski.medicalclinic.service;
 
 import com.rpietraszewski.medicalclinic.enums.DoctorSpecialization;
 import com.rpietraszewski.medicalclinic.mapper.DoctorMapper;
@@ -9,7 +9,6 @@ import com.rpietraszewski.medicalclinic.model.entity.Doctor;
 import com.rpietraszewski.medicalclinic.model.entity.Institution;
 import com.rpietraszewski.medicalclinic.repository.DoctorRepository;
 import com.rpietraszewski.medicalclinic.repository.InstitutionRepository;
-import com.rpietraszewski.medicalclinic.service.DoctorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;

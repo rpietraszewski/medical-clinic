@@ -1,4 +1,4 @@
-package com.rpietraszewski.medicalclinic.PatientService;
+package com.rpietraszewski.medicalclinic.service;
 
 import com.rpietraszewski.medicalclinic.mapper.PatientMapper;
 import com.rpietraszewski.medicalclinic.model.dto.ChangePasswordCommandDTO;
@@ -201,6 +201,7 @@ public class PatientServiceTest {
         when(patientRepository.save(any())).thenReturn(patient);
 
         PatientDTO result = patientService.updatePassword("patient@patient.pl", changePasswordCommandDTO);
+
 
         verify(patientRepository).save(patient);
     }

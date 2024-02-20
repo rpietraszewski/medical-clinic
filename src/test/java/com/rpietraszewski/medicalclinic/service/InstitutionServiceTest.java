@@ -1,4 +1,4 @@
-package com.rpietraszewski.medicalclinic.InstitutionService;
+package com.rpietraszewski.medicalclinic.service;
 
 import com.rpietraszewski.medicalclinic.mapper.InstitutionMapper;
 import com.rpietraszewski.medicalclinic.model.dto.InstitutionCreateDTO;
