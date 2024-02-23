@@ -32,7 +32,7 @@ public class InstitutionController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{name}")
-    public void deleteInstitution(@PathVariable("name") String name) {
-        institutionService.deleteInstitution(name);
+    public void deleteInstitution(@PathVariable("name") Long id) {
+        institutionService.deleteInstitution(id);
     }
 }

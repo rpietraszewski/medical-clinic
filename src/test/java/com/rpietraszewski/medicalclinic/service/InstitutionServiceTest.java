@@ -1,15 +1,19 @@
 package com.rpietraszewski.medicalclinic.service;
 
+import com.rpietraszewski.medicalclinic.TestDataFactory;
+import com.rpietraszewski.medicalclinic.exception.InstitutionNameAlreadyExistsException;
+import com.rpietraszewski.medicalclinic.exception.InstitutionNotFoundException;
 import com.rpietraszewski.medicalclinic.mapper.InstitutionMapper;
 import com.rpietraszewski.medicalclinic.model.dto.InstitutionCreateDTO;
 import com.rpietraszewski.medicalclinic.model.dto.InstitutionDTO;
 import com.rpietraszewski.medicalclinic.model.entity.Institution;
 import com.rpietraszewski.medicalclinic.repository.InstitutionRepository;
-import com.rpietraszewski.medicalclinic.service.InstitutionService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Mockito;
+import org.springframework.http.HttpStatus;
 
 import java.util.HashSet;
 import java.util.List;
@@ -149,10 +153,54 @@ public class InstitutionServiceTest {
                 .doctors(new HashSet<>())
                 .build();
 
-        when(institutionRepository.findByName("name")).thenReturn(Optional.of(institution));
+        when(institutionRepository.findById(1L)).thenReturn(Optional.of(institution));
 
-        institutionService.deleteInstitution("name");
+        institutionService.deleteInstitution(1L);
 
         verify(institutionRepository).delete(institution);
+    }
+
+    @Test
+    void getInstitution_InstitutionNotFound_InstitutionNotFoundExceptionThrown(){
+        //given
+        when(institutionRepository.findById(1L)).thenReturn(Optional.empty());
+
+        //when
+        InstitutionNotFoundException exception = Assertions.assertThrows(InstitutionNotFoundException.class,
+                () -> institutionService.deleteInstitution(1L));
+
+        //then
+        assertEquals("Institution not found for id 1", exception.getMessage());
+        assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
+    }
+
+    @Test
+    void createInstitution_InstitutionNameAlreadyExists_InstitutionNameAlreadyExistsExceptionThrown(){
+        //given
+        InstitutionCreateDTO institutionCreateDTO = TestDataFactory.createInstitutionCreateDTO();
+
+        when(institutionRepository.existsByName(any())).thenReturn(true);
+
+        //when
+        InstitutionNameAlreadyExistsException exception = Assertions.assertThrows(InstitutionNameAlreadyExistsException.class,
+                () -> institutionService.createInstitution(institutionCreateDTO));
+
+        //then
+        assertEquals("Name already exists for name institutionName", exception.getMessage());
+        assertEquals(HttpStatus.CONFLICT, exception.getHttpStatus());
+    }
+
+    @Test
+    void deleteInstitution_InstitutionNotFound_InstitutionNotFoundExceptionThrown(){
+        //given
+        when(institutionRepository.findByName(any())).thenReturn(Optional.empty());
+
+        //when
+        InstitutionNotFoundException exception = Assertions.assertThrows(InstitutionNotFoundException.class,
+                () -> institutionService.deleteInstitution(1L));
+
+        //then
+        assertEquals("Institution not found for id 1", exception.getMessage());
+        assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
     }
 }

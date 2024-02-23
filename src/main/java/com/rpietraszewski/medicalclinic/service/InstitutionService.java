@@ -42,9 +42,9 @@ public class InstitutionService {
         return institutionMapper.toInstitutionDTO(institutionRepository.save(newInstitution));
     }
 
-    public void deleteInstitution(String name) {
-        Institution existingInstitution = institutionRepository.findByName(name)
-                .orElseThrow(() -> new InstitutionNotFoundException("Institution not found for name " + name));
+    public void deleteInstitution(Long id) {
+        Institution existingInstitution = institutionRepository.findById(id)
+                .orElseThrow(() -> new InstitutionNotFoundException("Institution not found for id " + id));
         institutionRepository.delete(existingInstitution);
     }
 }

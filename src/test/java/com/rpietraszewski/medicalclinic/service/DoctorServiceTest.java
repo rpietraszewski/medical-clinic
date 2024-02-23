@@ -1,6 +1,10 @@
 package com.rpietraszewski.medicalclinic.service;
 
+import com.rpietraszewski.medicalclinic.TestDataFactory;
 import com.rpietraszewski.medicalclinic.enums.DoctorSpecialization;
+import com.rpietraszewski.medicalclinic.exception.DoctorEmailAlreadyExistsException;
+import com.rpietraszewski.medicalclinic.exception.DoctorNotFoundException;
+import com.rpietraszewski.medicalclinic.exception.InstitutionNotFoundException;
 import com.rpietraszewski.medicalclinic.mapper.DoctorMapper;
 import com.rpietraszewski.medicalclinic.model.dto.AssignInstitutionCommandDTO;
 import com.rpietraszewski.medicalclinic.model.dto.DoctorCreateUpdateDTO;
@@ -9,10 +13,12 @@ import com.rpietraszewski.medicalclinic.model.entity.Doctor;
 import com.rpietraszewski.medicalclinic.model.entity.Institution;
 import com.rpietraszewski.medicalclinic.repository.DoctorRepository;
 import com.rpietraszewski.medicalclinic.repository.InstitutionRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Mockito;
+import org.springframework.http.HttpStatus;
 
 import java.util.HashSet;
 import java.util.List;
@@ -39,15 +45,7 @@ public class DoctorServiceTest {
 
     @Test
     void getDoctor_DataCorrect_DoctorDtoReturned() {
-        Doctor doctor = Doctor.builder()
-                .id(1L)
-                .email("doctor@doctor.pl")
-                .firstName("doctorName")
-                .lastName("doctorLastName")
-                .password("doctorPassword")
-                .specialization(DoctorSpecialization.GYNECOLOGIST)
-                .institutions(new HashSet<>())
-                .build();
+        Doctor doctor = TestDataFactory.createDoctor("doctor@doctor.pl");
 
         when(doctorRepository.findByEmail("doctor@doctor.pl")).thenReturn(Optional.of(doctor));
 
@@ -56,7 +54,7 @@ public class DoctorServiceTest {
         assertEquals("doctor@doctor.pl", result.getEmail());
         assertEquals("doctorName", result.getFirstName());
         assertEquals("doctorLastName", result.getLastName());
-        assertEquals(DoctorSpecialization.GYNECOLOGIST, result.getSpecialization());
+        assertEquals(DoctorSpecialization.CARDIOLOGIST, result.getSpecialization());
         assertTrue(result.getInstitutions().isEmpty());
     }
 
@@ -104,7 +102,7 @@ public class DoctorServiceTest {
     }
 
     @Test
-    void createDoctor_DataCorrect_DoctorDtoReturned(){
+    void createDoctor_DataCorrect_DoctorDtoReturned() {
         DoctorCreateUpdateDTO doctorCreateUpdateDTO = DoctorCreateUpdateDTO.builder()
                 .email("doctor@doctor.pl")
                 .firstName("doctorName")
@@ -135,7 +133,7 @@ public class DoctorServiceTest {
     }
 
     @Test
-    void deleteDoctor_DataCorrect_DoctorDeleted(){
+    void deleteDoctor_DataCorrect_DoctorDeleted() {
         Doctor doctor = Doctor.builder()
                 .email("doctor@doctor.pl")
                 .firstName("doctorName")
@@ -153,7 +151,7 @@ public class DoctorServiceTest {
     }
 
     @Test
-    void assignInstitutionToDoctor_DataCorrect_DoctorDtoReturned(){
+    void assignInstitutionToDoctor_DataCorrect_DoctorDtoReturned() {
         Doctor doctor = Doctor.builder()
                 .email("doctor@doctor.pl")
                 .firstName("doctorName")
@@ -173,11 +171,11 @@ public class DoctorServiceTest {
                 .build();
 
         AssignInstitutionCommandDTO assignInstitutionCommandDTO = AssignInstitutionCommandDTO.builder()
-                        .name("name")
-                        .build();
+                .id(1L)
+                .build();
 
         when(doctorRepository.findByEmail("doctor@doctor.pl")).thenReturn(Optional.of(doctor));
-        when(institutionRepository.findByName("name")).thenReturn(Optional.of(institution));
+        when(institutionRepository.findById(1L)).thenReturn(Optional.of(institution));
         when(doctorRepository.save(any())).thenReturn(doctor);
 
         DoctorDTO result = doctorService.assignInstitutionToDoctor("doctor@doctor.pl", assignInstitutionCommandDTO);
@@ -188,5 +186,83 @@ public class DoctorServiceTest {
         assertEquals(DoctorSpecialization.CARDIOLOGIST, result.getSpecialization());
         assertNotNull(result.getInstitutions());
         assertEquals(1, result.getInstitutions().size());
+    }
+
+    @Test
+    void getDoctor_DoctorNotFound_DoctorNotFoundExceptionThrown() {
+        //given
+        when(doctorRepository.findByEmail(any())).thenReturn(Optional.empty());
+
+        //when
+        DoctorNotFoundException exception = Assertions.assertThrows(DoctorNotFoundException.class,
+                () -> doctorService.getDoctor("doctor@doctor.pl"));
+
+        //then
+        assertEquals("Doctor not found for email doctor@doctor.pl", exception.getMessage());
+        assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
+    }
+
+    @Test
+    void createDoctor_DoctorEmailAlreadyExists_DoctorEmailAlreadyExistsExceptionThrown() {
+        //given
+        DoctorCreateUpdateDTO doctorCreateUpdateDTO = TestDataFactory.createDoctorCreateUpdateDTO("doctor@doctor.pl");
+
+        when(doctorRepository.existsByEmail(any())).thenReturn(true);
+
+        //when
+        DoctorEmailAlreadyExistsException exception = Assertions.assertThrows(DoctorEmailAlreadyExistsException.class,
+                () -> doctorService.createDoctor(doctorCreateUpdateDTO));
+
+        //then
+        assertEquals("Email already exists for email doctor@doctor.pl", exception.getMessage());
+        assertEquals(HttpStatus.CONFLICT, exception.getHttpStatus());
+    }
+
+    @Test
+    void deleteDoctor_DoctorNotFound_DoctorNotFoundExceptionThrown(){
+        //given
+        when(doctorRepository.findByEmail(any())).thenReturn(Optional.empty());
+
+        //when
+        DoctorNotFoundException exception = Assertions.assertThrows(DoctorNotFoundException.class,
+                () -> doctorService.deleteDoctor("doctor@doctor.pl"));
+
+        //then
+        assertEquals("Doctor not found for email doctor@doctor.pl", exception.getMessage());
+        assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
+    }
+
+    @Test
+    void assignInstitutionToDoctor_DoctorNotFound_DoctorNotFoundExceptionThrown() {
+        //given
+        AssignInstitutionCommandDTO assignInstitutionCommandDTO = new AssignInstitutionCommandDTO(1L);
+
+        when(doctorRepository.findByEmail(any())).thenReturn(Optional.empty());
+
+        //when
+        DoctorNotFoundException exception = Assertions.assertThrows(DoctorNotFoundException.class,
+                () -> doctorService.assignInstitutionToDoctor("doctor@doctor.pl", assignInstitutionCommandDTO));
+
+        //then
+        assertEquals("Doctor not found for email doctor@doctor.pl", exception.getMessage());
+        assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
+    }
+
+    @Test
+    void assignInstitutionToDoctor_InstitutionNotFound_InstitutionNotFoundExceptionThrown(){
+        //given
+        AssignInstitutionCommandDTO assignInstitutionCommandDTO = new AssignInstitutionCommandDTO(1L);
+        Doctor doctor = TestDataFactory.createDoctor("doctor@doctor.pl");
+
+        when(doctorRepository.findByEmail(any())).thenReturn(Optional.of(doctor));
+        when(institutionRepository.findByName(any())).thenReturn(Optional.empty());
+
+        //when
+        InstitutionNotFoundException exception = Assertions.assertThrows(InstitutionNotFoundException.class,
+                () -> doctorService.assignInstitutionToDoctor("doctor@doctor.pl", assignInstitutionCommandDTO));
+
+        //then
+        assertEquals("Institution not found for id 1", exception.getMessage());
+        assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
     }
 }

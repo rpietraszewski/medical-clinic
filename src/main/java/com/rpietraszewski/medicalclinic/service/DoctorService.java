@@ -50,18 +50,18 @@ public class DoctorService {
 
     public void deleteDoctor(String email) {
         Doctor existingDoctor = doctorRepository.findByEmail(email)
-                .orElseThrow(() -> new DoctorNotFoundException("Doctor not found for email" + email));
+                .orElseThrow(() -> new DoctorNotFoundException("Doctor not found for email " + email));
         doctorRepository.delete(existingDoctor);
     }
 
     @Transactional
     public DoctorDTO assignInstitutionToDoctor(String email, AssignInstitutionCommandDTO assignInstitutionCommandDTO) {
         Doctor existingDoctor = doctorRepository.findByEmail(email)
-                .orElseThrow(() -> new DoctorNotFoundException("Doctor not found for email" + email));
+                .orElseThrow(() -> new DoctorNotFoundException("Doctor not found for email " + email));
 
         DoctorValidator.validateNullAssignInstitution(assignInstitutionCommandDTO);
-        Institution existingInstitution = institutionRepository.findByName(assignInstitutionCommandDTO.getName())
-                .orElseThrow(() -> new InstitutionNotFoundException("Institution not found for name " + assignInstitutionCommandDTO.getName()));
+        Institution existingInstitution = institutionRepository.findById(assignInstitutionCommandDTO.getId())
+                .orElseThrow(() -> new InstitutionNotFoundException("Institution not found for id " + assignInstitutionCommandDTO.getId()));
 
         DoctorValidator.validateAssignInstitutionExists(existingDoctor, existingInstitution);
 

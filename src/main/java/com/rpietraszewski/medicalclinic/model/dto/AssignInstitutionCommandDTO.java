@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 public class AssignInstitutionCommandDTO {
-    private String name;
+    private Long id;
 }
