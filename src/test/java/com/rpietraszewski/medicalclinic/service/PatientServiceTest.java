@@ -47,9 +47,9 @@ public class PatientServiceTest {
 
         assertEquals(2 , result.size());
 
-        assertEquals("patient1@patient.pl", result.get(0).getEmail());
-        assertEquals("patientName", result.get(0).getFirstName());
-        assertEquals("patientLastName", result.get(0).getLastName());
+        assertEquals("patient1@patient.pl", result.getFirst().getEmail());
+        assertEquals("patientName", result.getFirst().getFirstName());
+        assertEquals("patientLastName", result.getFirst().getLastName());
 
         assertEquals("patient2@patient.pl", result.get(1).getEmail());
         assertEquals("patientName", result.get(1).getFirstName());

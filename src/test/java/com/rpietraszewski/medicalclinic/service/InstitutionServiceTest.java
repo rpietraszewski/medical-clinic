@@ -65,11 +65,11 @@ public class InstitutionServiceTest {
 
         assertEquals(2, result.size());
 
-        assertEquals(1L, result.get(0).getId());
-        assertEquals("city1", result.get(0).getCity());
-        assertEquals("zipCode1", result.get(0).getZipCode());
-        assertEquals("street1", result.get(0).getStreet());
-        assertEquals("number1", result.get(0).getBuildingNumber());
+        assertEquals(1L, result.getFirst().getId());
+        assertEquals("city1", result.getFirst().getCity());
+        assertEquals("zipCode1", result.getFirst().getZipCode());
+        assertEquals("street1", result.getFirst().getStreet());
+        assertEquals("number1", result.getFirst().getBuildingNumber());
         assertEquals("name1", result.get(0).getName());
         assertTrue(result.get(0).getDoctors().isEmpty());
 

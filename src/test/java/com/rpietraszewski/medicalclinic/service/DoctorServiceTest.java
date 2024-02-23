@@ -88,9 +88,9 @@ public class DoctorServiceTest {
 
         assertEquals(doctors.size(), doctorsDTO.size());
 
-        assertEquals("doctor1@doctor.pl", doctorsDTO.get(0).getEmail());
-        assertEquals("doctorName1", doctorsDTO.get(0).getFirstName());
-        assertEquals("doctorLastName1", doctorsDTO.get(0).getLastName());
+        assertEquals("doctor1@doctor.pl", doctorsDTO.getFirst().getEmail());
+        assertEquals("doctorName1", doctorsDTO.getFirst().getFirstName());
+        assertEquals("doctorLastName1", doctorsDTO.getFirst().getLastName());
         assertEquals(DoctorSpecialization.GYNECOLOGIST, doctorsDTO.get(0).getSpecialization());
         assertTrue(doctorsDTO.get(0).getInstitutions().isEmpty());
 
