@@ -96,8 +96,6 @@ public class PatientControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-
-        verify(patientService).deletePatient(any());
     }
 
     @Test

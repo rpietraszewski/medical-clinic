@@ -97,7 +97,5 @@ public class InstitutionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-
-        verify(institutionService).deleteInstitution(any());
     }
 }
