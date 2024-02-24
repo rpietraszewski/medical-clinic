@@ -74,7 +74,7 @@ public class PatientServiceTest {
         Patient patient = TestDataFactory.createPatient("patient@patient.pl", "patientIdCardNo");
 
         PatientCreateUpdateDTO patientCreateUpdateDTO = TestDataFactory
-                .createPatientCreatUpdateDTO("patient@patient.pl","patientIdCardNo");
+                .createPatientCreateUpdateDTO("patient@patient.pl","patientIdCardNo");
 
         when(patientRepository.existsByEmail("patient@patient.pl")).thenReturn(false);
         when(patientRepository.save(any())).thenReturn(patient);
@@ -102,16 +102,16 @@ public class PatientServiceTest {
         Patient patient = TestDataFactory.createPatient("patient@patient.pl", "patientIdCardNo");
 
         PatientCreateUpdateDTO patientCreateUpdateDTO = TestDataFactory
-                .createPatientCreatUpdateDTO("patientNew@patient.pl", "patientIdCardNo");
+                .createPatientCreateUpdateDTO("patient@patient.pl", "patientIdCardNo");
 
         when(patientRepository.findByEmail("patient@patient.pl")).thenReturn(Optional.of(patient));
         when(patientRepository.save(any())).thenReturn(patient);
 
         PatientDTO result = patientService.updatePatient("patient@patient.pl", patientCreateUpdateDTO);
 
-        assertEquals("patientNew@patient.pl", result.getEmail());
-        assertEquals("patientNameNew", result.getFirstName());
-        assertEquals("patientLastNameNew", result.getLastName());
+        assertEquals("patient@patient.pl", result.getEmail());
+        assertEquals("patientName", result.getFirstName());
+        assertEquals("patientLastName", result.getLastName());
     }
 
     @Test
@@ -149,7 +149,7 @@ public class PatientServiceTest {
     void createPatient_PatientEmailAlreadyExists_PatientEmailAlreadyExistsExceptionThrown(){
         //given
         PatientCreateUpdateDTO patientCreateUpdateDTO = TestDataFactory
-                .createPatientCreatUpdateDTO("patient@patient.pl", "patiendIdCardNo");
+                .createPatientCreateUpdateDTO("patient@patient.pl", "patiendIdCardNo");
 
         when(patientRepository.existsByEmail(any())).thenReturn(true);
 
@@ -180,7 +180,7 @@ public class PatientServiceTest {
     void updatePatient_PatientNotFound_PatientNotFoundExceptionThrown(){
         //given
         PatientCreateUpdateDTO patientCreateUpdateDTO = TestDataFactory
-                .createPatientCreatUpdateDTO("patient@patient.pl", "patientIdCardNo");
+                .createPatientCreateUpdateDTO("patient@patient.pl", "patientIdCardNo");
 
         when(patientRepository.findByEmail(any())).thenReturn(Optional.empty());
 

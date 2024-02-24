@@ -1,12 +1,14 @@
 package com.rpietraszewski.medicalclinic.model.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 import java.util.Set;
 
 @Data
+@Builder
 @AllArgsConstructor
 public class InstitutionDTO {
     private Long id;

@@ -1,9 +1,7 @@
 package com.rpietraszewski.medicalclinic;
 
 import com.rpietraszewski.medicalclinic.enums.DoctorSpecialization;
-import com.rpietraszewski.medicalclinic.model.dto.DoctorCreateUpdateDTO;
-import com.rpietraszewski.medicalclinic.model.dto.InstitutionCreateDTO;
-import com.rpietraszewski.medicalclinic.model.dto.PatientCreateUpdateDTO;
+import com.rpietraszewski.medicalclinic.model.dto.*;
 import com.rpietraszewski.medicalclinic.model.entity.Doctor;
 import com.rpietraszewski.medicalclinic.model.entity.Institution;
 import com.rpietraszewski.medicalclinic.model.entity.Patient;
@@ -34,6 +32,16 @@ public class TestDataFactory {
                 .build();
     }
 
+    public static DoctorDTO createDoctorDTO(String email){
+        return  DoctorDTO.builder()
+                .email(email)
+                .firstName("doctorName")
+                .lastName("doctorLastName")
+                .specialization(DoctorSpecialization.CARDIOLOGIST)
+                .institutions(new HashSet<>())
+                .build();
+    }
+
     public static Patient createPatient(String email, String idCardNo){
         return Patient.builder()
                 .id(1L)
@@ -47,15 +55,23 @@ public class TestDataFactory {
                 .build();
     }
 
-    public static PatientCreateUpdateDTO createPatientCreatUpdateDTO(String email, String idCardNo){
+    public static PatientCreateUpdateDTO createPatientCreateUpdateDTO(String email, String idCardNo){
         return PatientCreateUpdateDTO.builder()
                 .email(email)
-                .firstName("patientNameNew")
-                .lastName("patientLastNameNew")
+                .firstName("patientName")
+                .lastName("patientLastName")
                 .idCardNo(idCardNo)
-                .password("patientPasswordNew")
-                .phoneNumber("patientPhoneNew")
+                .password("patientPassword")
+                .phoneNumber("patientPhone")
                 .birthday(LocalDate.of(2000,5,12))
+                .build();
+    }
+
+    public static PatientDTO createPatientDTO(String email){
+        return PatientDTO.builder()
+                .email(email)
+                .firstName("patientName")
+                .lastName("patientLastName")
                 .build();
     }
 
@@ -78,6 +94,18 @@ public class TestDataFactory {
                 .street("street")
                 .buildingNumber("buildingNumber")
                 .zipCode("zipCode")
+                .build();
+    }
+
+    public static InstitutionDTO createInstitutionDTO(){
+        return InstitutionDTO.builder()
+                .id(1L)
+                .name("institutionName")
+                .city("city")
+                .street("street")
+                .buildingNumber("buildingNumber")
+                .zipCode("zipCode")
+                .doctors(new HashSet<>())
                 .build();
     }
 }
