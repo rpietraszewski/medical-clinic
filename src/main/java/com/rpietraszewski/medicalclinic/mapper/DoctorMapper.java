@@ -19,7 +19,7 @@ public interface DoctorMapper {
     Doctor toDoctor(DoctorCreateUpdateDTO doctorCreateUpdateDTO);
 
     @Named("mapInstitutions")
-    default Set<Long> mapTolds(Set<Institution> institutions){
+    default Set<Long> mapToIds(Set<Institution> institutions){
         return institutions.stream()
                 .map(Institution::getId)
                 .collect(Collectors.toSet());

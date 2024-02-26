@@ -78,4 +78,28 @@ public class MedicalClinicExceptionHandler extends ResponseEntityExceptionHandle
     protected MessageDTO onInstitutionNotFoundErrorHandler(InstitutionNotFoundException ex) {
         return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
     }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(VisitNotFoundException.class)
+    protected MessageDTO onVisitNotFoundErrorHandler(VisitNotFoundException ex) {
+        return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(VisitAlreadyExistsException.class)
+    protected MessageDTO onVisitAlreadyExitsErrorHandler(VisitAlreadyExistsException ex) {
+        return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(VisitNullFieldsException.class)
+    protected MessageDTO onVisitNullFieldErrorHandler(VisitNullFieldsException ex) {
+        return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(VisitWrongDateTimeException.class)
+    protected MessageDTO onVisitWrongDateTimeErrorHandler(VisitWrongDateTimeException ex) {
+        return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
+    }
 }

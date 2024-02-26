@@ -36,6 +36,8 @@ public class Doctor {
             inverseJoinColumns = @JoinColumn(name = "institution_id", referencedColumnName = "id"))
     @JsonIgnore
     private Set<Institution> institutions = new HashSet<>();
+    @OneToMany(mappedBy = "doctor")
+    private Visit visit;
 
     public void update(Doctor doctor) {
         this.email = doctor.getEmail();

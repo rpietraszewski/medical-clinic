@@ -31,6 +31,8 @@ public class Institution {
     @ManyToMany(mappedBy = "institutions")
     @JsonIgnore
     private Set<Doctor> doctors = new HashSet<>();
+    @OneToMany(mappedBy = "institution")
+    private Visit visit;
 
     public void update(Institution institution) {
         this.name = institution.getName();

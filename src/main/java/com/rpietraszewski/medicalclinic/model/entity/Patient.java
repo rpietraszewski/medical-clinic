@@ -32,6 +32,8 @@ public class Patient {
     private String phoneNumber;
     @Column(name = "BIRTHDAY")
     private LocalDate birthday;
+    @OneToMany(mappedBy = "patient")
+    private Visit visit;
 
     public void update(Patient patient) {
         this.email = patient.getEmail();
