@@ -2,7 +2,6 @@ package com.rpietraszewski.medicalclinic;
 
 import com.rpietraszewski.medicalclinic.model.dto.PatientCreateUpdateDTO;
 import com.rpietraszewski.medicalclinic.model.dto.VisitCreateDTO;
-import com.rpietraszewski.medicalclinic.model.dto.VisitDTO;
 
 import java.util.Objects;
 import java.util.stream.Stream;

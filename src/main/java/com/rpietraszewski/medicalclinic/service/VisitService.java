@@ -16,11 +16,8 @@ import com.rpietraszewski.medicalclinic.repository.VisitRepository;
 import com.rpietraszewski.medicalclinic.validator.VisitValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
