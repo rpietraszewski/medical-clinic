@@ -1,12 +1,12 @@
 package com.rpietraszewski.medicalclinic.model.dto;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @EqualsAndHashCode
+@Builder
 @NoArgsConstructor(force = true)
+@AllArgsConstructor
 public class ChangePasswordCommandDTO {
     private String newPassword;
 }

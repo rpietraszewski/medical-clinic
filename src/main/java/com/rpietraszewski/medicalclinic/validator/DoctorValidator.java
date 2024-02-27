@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DoctorValidator {
     public static void validateNullAssignInstitution(AssignInstitutionCommandDTO institution) {
-        if (institution == null || institution.getName() == null) {
+        if (institution == null || institution.getId() == null) {
             throw new DoctorNullFieldsException("Provided institution name cannot be null");
         }
     }
