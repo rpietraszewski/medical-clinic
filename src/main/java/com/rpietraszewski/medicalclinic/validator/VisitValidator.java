@@ -26,4 +26,8 @@ public class VisitValidator {
             throw new IllegalArgumentException("Visit end date cannot be earlier than start date");
         }
     }
+
+    public static void validateNullFindVisit(){
+
+    }
 }

@@ -9,6 +9,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface VisitRepository extends JpaRepository<Visit, Long> {
-    @Query("Select ")
-    List<Visit> findByDoctorAndStartTimeAndEndTime(Doctor doctor, LocalDateTime startTime, LocalDateTime endTime);
+    @Query("SELECT v FROM Visit v " +
+            "WHERE v.doctor.email = :doctorEmail " +
+            "AND v.startDateTime <= :endTime " +
+            "AND v.endDateTime >= :startTime")
+    boolean existsByDoctorAndStartTimeAndEndTime(String doctorEmail, LocalDateTime startTime, LocalDateTime endTime);
+
+    @Query("SELECT v FROM Visit v " +
+            "WHERE v.doctor.email = :doctorEmail " +
+            "AND v.startDateTime >= :startTime " +
+            "AND v.endDateTime <= :endTime " +
+            "AND v.patient = IS NULL")
+    List<Visit> findByAvailableDoctorAndStartTimeAndEndTime(String doctorEmail, LocalDateTime startTime, LocalDateTime endTime);
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -33,7 +34,7 @@ public class Patient {
     @Column(name = "BIRTHDAY")
     private LocalDate birthday;
     @OneToMany(mappedBy = "patient")
-    private Visit visit;
+    private List<Visit> visit;
 
     public void update(Patient patient) {
         this.email = patient.getEmail();

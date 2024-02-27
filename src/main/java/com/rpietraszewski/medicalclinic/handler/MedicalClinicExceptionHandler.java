@@ -102,4 +102,10 @@ public class MedicalClinicExceptionHandler extends ResponseEntityExceptionHandle
     protected MessageDTO onVisitWrongDateTimeErrorHandler(VisitWrongDateTimeException ex) {
         return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
     }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(VisitAlreadyAssignedException.class)
+    protected MessageDTO onVisitAlreadyAssignedErrorHandler(VisitAlreadyAssignedException ex) {
+        return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
+    }
 }

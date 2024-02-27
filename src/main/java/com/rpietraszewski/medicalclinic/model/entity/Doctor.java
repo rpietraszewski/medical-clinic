@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -37,7 +38,7 @@ public class Doctor {
     @JsonIgnore
     private Set<Institution> institutions = new HashSet<>();
     @OneToMany(mappedBy = "doctor")
-    private Visit visit;
+    private List<Visit> visit;
 
     public void update(Doctor doctor) {
         this.email = doctor.getEmail();

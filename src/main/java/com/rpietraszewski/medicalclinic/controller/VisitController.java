@@ -17,7 +17,7 @@ public class VisitController {
 
     @GetMapping
     public List<VisitDTO> getVisits(@RequestBody FindVisitCommandDTO findVisitCommandDTO) {
-        return visitService.getVisitsByDoctorAndStartTimeAndEndTime(findVisitCommandDTO);
+        return visitService.getVisitsAvailableByDoctorAndStartTimeAndEndTime(findVisitCommandDTO);
     }
 
     @PostMapping
