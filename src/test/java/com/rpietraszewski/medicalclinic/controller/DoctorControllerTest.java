@@ -120,6 +120,5 @@ public class DoctorControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value(doctorDTO.getEmail()))
                 .andExpect(jsonPath("$.institutions").value(1));
-//                .andExpect(jsonPath("$.institutions[0]").value(new ArrayList<>(doctorDTO.getInstitutions)));
     }
 }
