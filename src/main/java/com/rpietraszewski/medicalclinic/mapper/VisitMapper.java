@@ -10,7 +10,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface VisitMapper {
     @Mapping(source = "doctor", target = "doctorEmail", qualifiedByName = "mapToDoctorEmail")
     @Mapping(source = "institution", target = "institution", qualifiedByName = "mapToInstitutionId")
@@ -23,16 +23,25 @@ public interface VisitMapper {
 
     @Named("mapToDoctorEmail")
     default String mapToDoctorEmail(Doctor doctor){
+        if(doctor == null){
+            return null;
+        }
         return doctor.getEmail();
     }
 
     @Named("mapToInstitutionId")
     default Long mapToInstitutionId(Institution institution){
+        if(institution == null){
+            return null;
+        }
         return institution.getId();
     }
 
     @Named("mapToPatientEmail")
     default String mapToPatientEmail(Patient patient){
+        if(patient == null){
+            return null;
+        }
         return patient.getEmail();
     }
 }

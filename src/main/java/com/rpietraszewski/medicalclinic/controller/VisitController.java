@@ -1,5 +1,6 @@
 package com.rpietraszewski.medicalclinic.controller;
 
+import com.rpietraszewski.medicalclinic.model.dto.AssignPatientCommandDTO;
 import com.rpietraszewski.medicalclinic.model.dto.FindVisitCommandDTO;
 import com.rpietraszewski.medicalclinic.model.dto.VisitCreateDTO;
 import com.rpietraszewski.medicalclinic.model.dto.VisitDTO;
@@ -23,5 +24,10 @@ public class VisitController {
     @PostMapping
     public VisitDTO createVisit(@RequestBody VisitCreateDTO visitCreateDTO) {
         return visitService.createVisit(visitCreateDTO);
+    }
+
+    @PatchMapping("/{id}")
+    public VisitDTO assignPatientToVisit(@PathVariable("id") Long visitId, @RequestBody AssignPatientCommandDTO assignPatientCommandDTO){
+        return visitService.assignPatientToVisit(visitId, assignPatientCommandDTO);
     }
 }

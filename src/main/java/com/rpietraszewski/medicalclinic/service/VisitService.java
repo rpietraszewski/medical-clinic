@@ -18,7 +18,9 @@ import com.rpietraszewski.medicalclinic.validator.VisitValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,9 +37,10 @@ public class VisitService {
                 .orElseThrow(() -> new DoctorNotFoundException("Doctor not found for email " + findVisitCommandDTO.getDoctorEmail()));
 
         return visitRepository.findByAvailableDoctorAndStartTimeAndEndTime(
-                        doctor.getEmail(),
+                        doctor.getId(),
                         findVisitCommandDTO.getStartTime(),
-                        findVisitCommandDTO.getEndTime()).stream()
+                        findVisitCommandDTO.getEndTime(),
+                        findVisitCommandDTO.getInstitution()).stream()
                 .map(visitMapper::toVisitDTO)
                 .toList();
     }
@@ -45,9 +48,14 @@ public class VisitService {
     public VisitDTO createVisit(VisitCreateDTO visitCreateDTO) {
         VisitValidator.validateVisit(visitCreateDTO);
 
-        Visit visit = visitMapper.toVisit(visitCreateDTO);
-        if (visitRepository.existsByDoctorAndStartTimeAndEndTime(visitCreateDTO.getDoctorEmail(), visitCreateDTO.getStartDateTime(), visitCreateDTO.getEndDateTime())) {
-            throw new VisitAlreadyExistsException("Visit within this date range already exists");
+        List<Visit> existingVisits = visitRepository.existsByDoctorAndStartTimeAndEndTime(
+                visitCreateDTO.getDoctorEmail(),
+                visitCreateDTO.getStartDateTime(),
+                visitCreateDTO.getEndDateTime()
+        );
+
+        if(!existingVisits.isEmpty()){
+            throw new VisitAlreadyExistsException("Visit in this time and for this doctor already exists");
         }
 
         Doctor doctor = doctorRepository.findByEmail(visitCreateDTO.getDoctorEmail())
@@ -56,16 +64,21 @@ public class VisitService {
         Institution institution = institutionRepository.findById(visitCreateDTO.getInstitution())
                 .orElseThrow(() -> new InstitutionNotFoundException("Institution not found for id " + visitCreateDTO.getInstitution()));
 
+        Visit visit = visitMapper.toVisit(visitCreateDTO);
         visit.setDoctor(doctor);
         visit.setInstitution(institution);
         return visitMapper.toVisitDTO(visitRepository.save(visit));
     }
 
-    public VisitDTO assignPatientToVisit(AssignPatientCommandDTO assignPatientCommandDTO){
-        Visit visit = visitRepository.findById(assignPatientCommandDTO.getVisit())
-                .orElseThrow(() -> new VisitNotFoundException("Not found visit for given id " + assignPatientCommandDTO.getVisit()));
+    public VisitDTO assignPatientToVisit(Long visitId, AssignPatientCommandDTO assignPatientCommandDTO) {
+        Visit visit = visitRepository.findById(visitId)
+                .orElseThrow(() -> new VisitNotFoundException("Not found visit for given id " + visitId));
 
-        if(visit.getPatient() != null && visit.getPatient().getId() != null){
+        if (visit.getStartDateTime().isBefore(LocalDateTime.now()) || visit.getEndDateTime().isBefore(LocalDateTime.now())) {
+            throw new VisitPastDateException("Chosen visit has expired");
+        }
+
+        if (visit.getPatient() != null && visit.getPatient().getId() != null) {
             throw new VisitAlreadyAssignedException("Someone has already assigned to this visit");
         }
 

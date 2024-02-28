@@ -17,17 +17,13 @@ public class VisitValidator {
             throw new VisitNullFieldsException("Visit cannot contain empty values");
         }
         if(visitCreateDTO.getStartDateTime().isBefore(LocalDateTime.now())){
-            throw new VisitWrongDateTimeException("Visit start date cannot be in the past");
+            throw new VisitWrongDateTimeException("Visit start time cannot be in the past");
         }
         if(visitCreateDTO.getStartDateTime().getMinute() % 15 != 0){
             throw new IllegalArgumentException("Visit must start at some quarter of an hour");
         }
-        if(visitCreateDTO.getEndDateTime().isBefore(visitCreateDTO.getEndDateTime())){
-            throw new IllegalArgumentException("Visit end date cannot be earlier than start date");
+        if(visitCreateDTO.getEndDateTime().isBefore(visitCreateDTO.getStartDateTime())){
+            throw new IllegalArgumentException("Visit end time cannot be earlier than start time");
         }
-    }
-
-    public static void validateNullFindVisit(){
-
     }
 }

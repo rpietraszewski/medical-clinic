@@ -8,6 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,9 @@ public interface InstitutionMapper {
 
     @Named("mapDoctors")
     default Set<Long> mapTolds(Set<Doctor> doctors){
+        if(doctors == null){
+            return Collections.emptySet();
+        }
         return doctors.stream()
                 .map(Doctor::getId)
                 .collect(Collectors.toSet());

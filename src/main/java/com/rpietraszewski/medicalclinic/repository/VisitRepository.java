@@ -6,18 +6,20 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface VisitRepository extends JpaRepository<Visit, Long> {
     @Query("SELECT v FROM Visit v " +
             "WHERE v.doctor.email = :doctorEmail " +
             "AND v.startDateTime <= :endTime " +
             "AND v.endDateTime >= :startTime")
-    boolean existsByDoctorAndStartTimeAndEndTime(String doctorEmail, LocalDateTime startTime, LocalDateTime endTime);
+    List<Visit> existsByDoctorAndStartTimeAndEndTime(String doctorEmail, LocalDateTime startTime, LocalDateTime endTime);
 
     @Query("SELECT v FROM Visit v " +
-            "WHERE v.doctor.email = :doctorEmail " +
+            "WHERE v.doctor.id = :doctorId " +
             "AND v.startDateTime >= :startTime " +
             "AND v.endDateTime <= :endTime " +
-            "AND v.patient = IS NULL")
-    List<Visit> findByAvailableDoctorAndStartTimeAndEndTime(String doctorEmail, LocalDateTime startTime, LocalDateTime endTime);
+            "AND v.patient IS NULL " +
+            "AND v.institution.id = :institutionId")
+    List<Visit> findByAvailableDoctorAndStartTimeAndEndTime(Long doctorId, LocalDateTime startTime, LocalDateTime endTime, Long institutionId);
 }
