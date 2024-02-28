@@ -1,7 +1,9 @@
 package com.rpietraszewski.medicalclinic.service;
 
+import com.rpietraszewski.medicalclinic.MedicalApplicationHelper;
 import com.rpietraszewski.medicalclinic.exception.PatientEmailAlreadyExistsException;
 import com.rpietraszewski.medicalclinic.exception.PatientNotFoundException;
+import com.rpietraszewski.medicalclinic.exception.PatientNullFieldsException;
 import com.rpietraszewski.medicalclinic.mapper.PatientMapper;
 import com.rpietraszewski.medicalclinic.model.dto.ChangePasswordCommandDTO;
 import com.rpietraszewski.medicalclinic.model.dto.PatientCreateUpdateDTO;
@@ -35,6 +37,10 @@ public class PatientService {
 
     @Transactional
     public PatientDTO createPatient(PatientCreateUpdateDTO patientCreateUpdateDTO) {
+        if (MedicalApplicationHelper.patientHasNullFields(patientCreateUpdateDTO)) {
+            throw new PatientNullFieldsException("Patient cannot have empty fields");
+        }
+
         if (patientRepository.existsByEmail(patientCreateUpdateDTO.getEmail())) {
             throw new PatientEmailAlreadyExistsException("Email already exists for email " + patientCreateUpdateDTO.getEmail());
         }
