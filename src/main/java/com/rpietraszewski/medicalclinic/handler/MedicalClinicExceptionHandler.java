@@ -111,7 +111,7 @@ public class MedicalClinicExceptionHandler extends ResponseEntityExceptionHandle
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(VisitPastDateException.class)
-    protected MessageDTO onVisitPastDateErrorHandler(VisitPastDateException ex){
+    protected MessageDTO onVisitPastDateErrorHandler(VisitPastDateException ex) {
         return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
     }
 }

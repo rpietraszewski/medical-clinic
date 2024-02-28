@@ -37,7 +37,7 @@ public class PatientService {
 
     @Transactional
     public PatientDTO createPatient(PatientCreateUpdateDTO patientCreateUpdateDTO) {
-        if(MedicalApplicationHelper.patientHasNullFields(patientCreateUpdateDTO)){
+        if (MedicalApplicationHelper.patientHasNullFields(patientCreateUpdateDTO)) {
             throw new PatientNullFieldsException("Patient cannot have empty fields");
         }
 

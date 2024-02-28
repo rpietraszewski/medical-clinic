@@ -27,7 +27,7 @@ public class VisitController {
     }
 
     @PatchMapping("/{id}")
-    public VisitDTO assignPatientToVisit(@PathVariable("id") Long visitId, @RequestBody AssignPatientCommandDTO assignPatientCommandDTO){
+    public VisitDTO assignPatientToVisit(@PathVariable("id") Long visitId, @RequestBody AssignPatientCommandDTO assignPatientCommandDTO) {
         return visitService.assignPatientToVisit(visitId, assignPatientCommandDTO);
     }
 }

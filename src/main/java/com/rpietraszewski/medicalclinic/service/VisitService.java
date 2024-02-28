@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +53,7 @@ public class VisitService {
                 visitCreateDTO.getEndDateTime()
         );
 
-        if(!existingVisits.isEmpty()){
+        if (!existingVisits.isEmpty()) {
             throw new VisitAlreadyExistsException("Visit in this time and for this doctor already exists");
         }
 

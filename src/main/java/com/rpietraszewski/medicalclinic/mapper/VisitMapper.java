@@ -22,24 +22,24 @@ public interface VisitMapper {
     Visit toVisit(VisitCreateDTO visitCreateDTO);
 
     @Named("mapToDoctorEmail")
-    default String mapToDoctorEmail(Doctor doctor){
-        if(doctor == null){
+    default String mapToDoctorEmail(Doctor doctor) {
+        if (doctor == null) {
             return null;
         }
         return doctor.getEmail();
     }
 
     @Named("mapToInstitutionId")
-    default Long mapToInstitutionId(Institution institution){
-        if(institution == null){
+    default Long mapToInstitutionId(Institution institution) {
+        if (institution == null) {
             return null;
         }
         return institution.getId();
     }
 
     @Named("mapToPatientEmail")
-    default String mapToPatientEmail(Patient patient){
-        if(patient == null){
+    default String mapToPatientEmail(Patient patient) {
+        if (patient == null) {
             return null;
         }
         return patient.getEmail();

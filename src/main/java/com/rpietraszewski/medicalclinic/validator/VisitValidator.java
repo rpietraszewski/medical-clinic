@@ -12,17 +12,17 @@ import static com.rpietraszewski.medicalclinic.MedicalApplicationHelper.visitHas
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class VisitValidator {
-    public static void validateVisit(VisitCreateDTO visitCreateDTO){
-        if(visitHasNullFields(visitCreateDTO)){
+    public static void validateVisit(VisitCreateDTO visitCreateDTO) {
+        if (visitHasNullFields(visitCreateDTO)) {
             throw new VisitNullFieldsException("Visit cannot contain empty values");
         }
-        if(visitCreateDTO.getStartDateTime().isBefore(LocalDateTime.now())){
+        if (visitCreateDTO.getStartDateTime().isBefore(LocalDateTime.now())) {
             throw new VisitWrongDateTimeException("Visit start time cannot be in the past");
         }
-        if(visitCreateDTO.getStartDateTime().getMinute() % 15 != 0){
+        if (visitCreateDTO.getStartDateTime().getMinute() % 15 != 0) {
             throw new IllegalArgumentException("Visit must start at some quarter of an hour");
         }
-        if(visitCreateDTO.getEndDateTime().isBefore(visitCreateDTO.getStartDateTime())){
+        if (visitCreateDTO.getEndDateTime().isBefore(visitCreateDTO.getStartDateTime())) {
             throw new IllegalArgumentException("Visit end time cannot be earlier than start time");
         }
     }

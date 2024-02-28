@@ -20,8 +20,8 @@ public interface InstitutionMapper {
     Institution toInstitution(InstitutionCreateDTO institutionCreateDTO);
 
     @Named("mapDoctors")
-    default Set<Long> mapTolds(Set<Doctor> doctors){
-        if(doctors == null){
+    default Set<Long> mapTolds(Set<Doctor> doctors) {
+        if (doctors == null) {
             return Collections.emptySet();
         }
         return doctors.stream()

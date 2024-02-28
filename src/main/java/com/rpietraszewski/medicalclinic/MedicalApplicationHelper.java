@@ -12,7 +12,7 @@ public class MedicalApplicationHelper {
                 .anyMatch(Objects::isNull);
     }
 
-    public static boolean visitHasNullFields(VisitCreateDTO visit){
+    public static boolean visitHasNullFields(VisitCreateDTO visit) {
         return Stream.of(visit.getDoctorEmail(), visit.getInstitution(), visit.getStartDateTime(), visit.getEndDateTime())
                 .anyMatch(Objects::isNull);
     }
