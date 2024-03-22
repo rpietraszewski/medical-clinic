@@ -9,6 +9,7 @@ import com.rpietraszewski.medicalclinic.model.dto.PatientCreateUpdateDTO;
 import com.rpietraszewski.medicalclinic.model.dto.PatientDTO;
 import com.rpietraszewski.medicalclinic.model.entity.Patient;
 import com.rpietraszewski.medicalclinic.repository.PatientRepository;
+import com.rpietraszewski.medicalclinic.repository.VisitRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,18 +27,20 @@ import static org.mockito.Mockito.when;
 
 public class PatientServiceTest {
     PatientRepository patientRepository;
+    VisitRepository visitRepository;
     PatientMapper patientMapper;
     PatientService patientService;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         this.patientRepository = Mockito.mock(PatientRepository.class);
+        this.visitRepository = Mockito.mock(VisitRepository.class);
         this.patientMapper = Mappers.getMapper(PatientMapper.class);
-        this.patientService = new PatientService(patientRepository, patientMapper);
+        this.patientService = new PatientService(patientRepository, patientMapper, visitRepository);
     }
 
     @Test
-    void getPatient_DataCorrect_ListPatientsDtoReturned(){
+    void getPatient_DataCorrect_ListPatientsDtoReturned() {
         Patient patient1 = TestDataFactory.createPatient("patient1@patient.pl", "patient1IdCardNo");
         Patient patient2 = TestDataFactory.createPatient("patient2@patient.pl", "patient2IdCardNo");
 
@@ -45,11 +48,11 @@ public class PatientServiceTest {
 
         List<PatientDTO> result = patientService.getPatients();
 
-        assertEquals(2 , result.size());
+        assertEquals(2, result.size());
 
-        assertEquals("patient1@patient.pl", result.getFirst().getEmail());
-        assertEquals("patientName", result.getFirst().getFirstName());
-        assertEquals("patientLastName", result.getFirst().getLastName());
+        assertEquals("patient1@patient.pl", result.get(0).getEmail());
+        assertEquals("patientName", result.get(0).getFirstName());
+        assertEquals("patientLastName", result.get(0).getLastName());
 
         assertEquals("patient2@patient.pl", result.get(1).getEmail());
         assertEquals("patientName", result.get(1).getFirstName());
@@ -57,12 +60,12 @@ public class PatientServiceTest {
     }
 
     @Test
-    void getPatient_DataCorrect_PatientDtoReturned(){
+    void getPatient_DataCorrect_PatientDtoReturned() {
         Patient patient = TestDataFactory.createPatient("patient@patient.pl", "patientIdCardNo");
 
-        when(patientRepository.findByEmail("patient@patient.pl")).thenReturn(Optional.of(patient));
+        when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
 
-        PatientDTO result = patientService.getPatient("patient@patient.pl");
+        PatientDTO result = patientService.getPatient(1L);
 
         assertEquals("patient@patient.pl", result.getEmail());
         assertEquals("patientName", result.getFirstName());
@@ -70,11 +73,11 @@ public class PatientServiceTest {
     }
 
     @Test
-    void createPatient_DataCorrect_PatientDtoReturned(){
+    void createPatient_DataCorrect_PatientDtoReturned() {
         Patient patient = TestDataFactory.createPatient("patient@patient.pl", "patientIdCardNo");
 
         PatientCreateUpdateDTO patientCreateUpdateDTO = TestDataFactory
-                .createPatientCreateUpdateDTO("patient@patient.pl","patientIdCardNo");
+                .createPatientCreateUpdateDTO("patient@patient.pl", "patientIdCardNo");
 
         when(patientRepository.existsByEmail("patient@patient.pl")).thenReturn(false);
         when(patientRepository.save(any())).thenReturn(patient);
@@ -87,27 +90,27 @@ public class PatientServiceTest {
     }
 
     @Test
-    void patientDelete_DataCorrect_PatientDeleted(){
+    void patientDelete_DataCorrect_PatientDeleted() {
         Patient patient = TestDataFactory.createPatient("patient@patient.pl", "patientIdCardNo");
 
-        when(patientRepository.findByEmail("patient@patient.pl")).thenReturn(Optional.of(patient));
+        when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
 
-        patientService.deletePatient("patient@patient.pl");
+        patientService.deletePatient(1L);
 
         verify(patientRepository).delete(patient);
     }
 
     @Test
-    void updatePatient_DataCorrect_PatientDtoReturned(){
+    void updatePatient_DataCorrect_PatientDtoReturned() {
         Patient patient = TestDataFactory.createPatient("patient@patient.pl", "patientIdCardNo");
 
         PatientCreateUpdateDTO patientCreateUpdateDTO = TestDataFactory
                 .createPatientCreateUpdateDTO("patient@patient.pl", "patientIdCardNo");
 
-        when(patientRepository.findByEmail("patient@patient.pl")).thenReturn(Optional.of(patient));
+        when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
         when(patientRepository.save(any())).thenReturn(patient);
 
-        PatientDTO result = patientService.updatePatient("patient@patient.pl", patientCreateUpdateDTO);
+        PatientDTO result = patientService.updatePatient(1L, patientCreateUpdateDTO);
 
         assertEquals("patient@patient.pl", result.getEmail());
         assertEquals("patientName", result.getFirstName());
@@ -115,38 +118,38 @@ public class PatientServiceTest {
     }
 
     @Test
-    void updatePassword_DataCorrect_PatientDtoReturned(){
+    void updatePassword_DataCorrect_PatientDtoReturned() {
         Patient patient = TestDataFactory.createPatient("patient@patient.pl", "patientIdCardNo");
 
         ChangePasswordCommandDTO changePasswordCommandDTO = ChangePasswordCommandDTO.builder()
                 .newPassword("newPassword")
                 .build();
 
-        when(patientRepository.findByEmail("patient@patient.pl")).thenReturn(Optional.of(patient));
+        when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
         when(patientRepository.save(any())).thenReturn(patient);
 
-        PatientDTO result = patientService.updatePassword("patient@patient.pl", changePasswordCommandDTO);
+        PatientDTO result = patientService.updatePassword(1L, changePasswordCommandDTO);
 
         assertEquals("newPassword", patient.getPassword());
         verify(patientRepository).save(patient);
     }
 
     @Test
-    void getPatient_PatientNotFound_PatientNotFoundExceptionThrown(){
+    void getPatient_PatientNotFound_PatientNotFoundExceptionThrown() {
         //given
-        when(patientRepository.findByEmail(any())).thenReturn(Optional.empty());
+        when(patientRepository.findById(any())).thenReturn(Optional.empty());
 
         //when
         PatientNotFoundException exception = Assertions.assertThrows(PatientNotFoundException.class,
-                () -> patientService.getPatient("patient@patient.pl"));
+                () -> patientService.getPatient(1L));
 
         //then
-        assertEquals("Patient not found for email patient@patient.pl", exception.getMessage());
+        assertEquals("Patient not found for id 1", exception.getMessage());
         assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
     }
 
     @Test
-    void createPatient_PatientEmailAlreadyExists_PatientEmailAlreadyExistsExceptionThrown(){
+    void createPatient_PatientEmailAlreadyExists_PatientEmailAlreadyExistsExceptionThrown() {
         //given
         PatientCreateUpdateDTO patientCreateUpdateDTO = TestDataFactory
                 .createPatientCreateUpdateDTO("patient@patient.pl", "patiendIdCardNo");
@@ -163,21 +166,21 @@ public class PatientServiceTest {
     }
 
     @Test
-    void deletePatient_PatientNotFound_PatientNotFoundExceptionThrown(){
+    void deletePatient_PatientNotFound_PatientNotFoundExceptionThrown() {
         //given
         when(patientRepository.findByEmail(any())).thenReturn(Optional.empty());
 
         //when
         PatientNotFoundException exception = Assertions.assertThrows(PatientNotFoundException.class,
-                () -> patientService.deletePatient("patient@patien.pl"));
+                () -> patientService.deletePatient(1L));
 
         //then
-        assertEquals("Patient not found for email patient@patien.pl", exception.getMessage());
+        assertEquals("Patient not found for id 1", exception.getMessage());
         assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
     }
 
     @Test
-    void updatePatient_PatientNotFound_PatientNotFoundExceptionThrown(){
+    void updatePatient_PatientNotFound_PatientNotFoundExceptionThrown() {
         //given
         PatientCreateUpdateDTO patientCreateUpdateDTO = TestDataFactory
                 .createPatientCreateUpdateDTO("patient@patient.pl", "patientIdCardNo");
@@ -186,15 +189,15 @@ public class PatientServiceTest {
 
         //when
         PatientNotFoundException exception = Assertions.assertThrows(PatientNotFoundException.class,
-                () -> patientService.updatePatient("patient@patient.pl", patientCreateUpdateDTO));
+                () -> patientService.updatePatient(1L, patientCreateUpdateDTO));
 
         //then
-        assertEquals("Patient not found for email patient@patient.pl", exception.getMessage());
+        assertEquals("Patient not found for id 1", exception.getMessage());
         assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
     }
 
     @Test
-    void updatePassword_PatientNotFound_PatientNotFoundExceptionThrown(){
+    void updatePassword_PatientNotFound_PatientNotFoundExceptionThrown() {
         //given
         ChangePasswordCommandDTO changePasswordCommandDTO = ChangePasswordCommandDTO.builder()
                 .newPassword("newPassword")
@@ -204,10 +207,10 @@ public class PatientServiceTest {
 
         //when
         PatientNotFoundException exception = Assertions.assertThrows(PatientNotFoundException.class,
-                () -> patientService.updatePassword("patient@patient.pl", changePasswordCommandDTO));
+                () -> patientService.updatePassword(1L, changePasswordCommandDTO));
 
         //then
-        assertEquals("Patient not found for email patient@patient.pl", exception.getMessage());
+        assertEquals("Patient not found for id 1", exception.getMessage());
         assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
     }
 }

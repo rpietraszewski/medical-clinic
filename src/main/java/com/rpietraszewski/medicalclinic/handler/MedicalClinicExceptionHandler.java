@@ -114,4 +114,10 @@ public class MedicalClinicExceptionHandler extends ResponseEntityExceptionHandle
     protected MessageDTO onVisitPastDateErrorHandler(VisitPastDateException ex) {
         return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DateNullException.class)
+    protected MessageDTO onDateNullErrorHandler(DateNullException ex){
+        return new MessageDTO(ex.getMessage(), LocalDate.now(), ex.getHttpStatus());
+    }
 }

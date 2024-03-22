@@ -10,5 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public class AssignPatientCommandDTO {
-    private String patientEmail;
+    private Long patientId;
 }
