@@ -81,10 +81,16 @@ public class VisitService {
             throw new VisitAlreadyAssignedException("Someone has already assigned to this visit");
         }
 
-        Patient patient = patientRepository.findByEmail(assignPatientCommandDTO.getPatientEmail())
-                .orElseThrow(() -> new PatientNotFoundException("Not found patient for email " + assignPatientCommandDTO.getPatientEmail()));
+        Patient patient = patientRepository.findById(assignPatientCommandDTO.getPatientId())
+                .orElseThrow(() -> new PatientNotFoundException("Not found patient for id " + assignPatientCommandDTO.getPatientId()));
 
         visit.setPatient(patient);
         return visitMapper.toVisitDTO(visitRepository.save(visit));
+    }
+
+    public List<VisitDTO> getVisitsForPatient(Long id){
+        return visitRepository.findByPatientId(id).stream()
+                .map(visitMapper::toVisitDTO)
+                .toList();
     }
 }

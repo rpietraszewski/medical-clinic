@@ -30,4 +30,9 @@ public class VisitController {
     public VisitDTO assignPatientToVisit(@PathVariable("id") Long visitId, @RequestBody AssignPatientCommandDTO assignPatientCommandDTO) {
         return visitService.assignPatientToVisit(visitId, assignPatientCommandDTO);
     }
+
+    @GetMapping("/{id}")
+    public List<VisitDTO> getVisitsForPatient(@PathVariable("id") Long patientId){
+        return visitService.getVisitsForPatient(patientId);
+    }
 }

@@ -1,0 +1,79 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: Robert
+      changes:
+        - createTable:
+            tableName: doctor
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_doctor_id
+              - column:
+                  name: email
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(50)
+              - column:
+                  name: first_name
+                  type: varchar(50)
+              - column:
+                  name: last_name
+                  type: varchar(50)
+              - column:
+                  name: specialization
+                  type: varchar(50)
+        - createTable:
+            tableName: institution
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_institution_id
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    uniqueName: uq_institution_name
+              - column:
+                  name: city
+                  type: varchar(50)
+              - column:
+                  name: zipCode
+                  type: varchar(50)
+              - column:
+                  name: street
+                  type: varchar(50)
+              - column:
+                  name: building_number
+                  type: varchar(50)
+        - createTable:
+            tableName: doctor_institution
+            columns:
+              - column:
+                  name: doctor_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_doctor_institution_doctor_id
+                    references: doctor(id)
+              - column:
+                  name: institution_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_doctor_institution_institution_id
+                    references: institution(id)

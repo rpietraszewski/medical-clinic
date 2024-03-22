@@ -69,6 +69,7 @@ public class TestDataFactory {
 
     public static PatientDTO createPatientDTO(String email){
         return PatientDTO.builder()
+                .id(1L)
                 .email(email)
                 .firstName("patientName")
                 .lastName("patientLastName")

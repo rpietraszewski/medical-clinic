@@ -15,5 +15,5 @@ public class VisitDTO {
     private LocalDateTime endDateTime;
     private Long institution;
     private String doctorEmail;
-    private String patientEmail;
+    private Long patientId;
 }

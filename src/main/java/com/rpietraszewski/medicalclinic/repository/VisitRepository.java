@@ -21,4 +21,14 @@ public interface VisitRepository extends JpaRepository<Visit, Long> {
             "AND v.patient IS NULL " +
             "AND v.institution.id = :institutionId")
     List<Visit> findByAvailableDoctorAndStartTimeAndEndTime(Long doctorId, LocalDateTime startTime, LocalDateTime endTime, Long institutionId);
+
+    @Query("SELECT v FROM Visit v " +
+            "WHERE v.startDateTime >= :startDay " +
+            "AND v.endDateTime <= :endDay " +
+            "AND v.patient IS NOT NULL")
+    List<Visit> findByDate(LocalDateTime startDay, LocalDateTime endDay);
+
+    @Query("SELECT v FROM Visit v " +
+            "WHERE v.patient.id = :id")
+    List<Visit> findByPatientId(Long id);
 }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -21,9 +22,9 @@ public class PatientController {
         return patientService.getPatients();
     }
 
-    @GetMapping("/{email}")
-    public PatientDTO getPatient(@PathVariable("email") String email) {
-        return patientService.getPatient(email);
+    @GetMapping("/{id}")
+    public PatientDTO getPatient(@PathVariable("id") Long id) {
+        return patientService.getPatient(id);
     }
 
     @PostMapping
@@ -32,18 +33,23 @@ public class PatientController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{email}")
-    public void deletePatient(@PathVariable("email") String email) {
-        patientService.deletePatient(email);
+    @DeleteMapping("/{id}")
+    public void deletePatient(@PathVariable("id") Long id) {
+        patientService.deletePatient(id);
     }
 
-    @PutMapping("/{email}")
-    public PatientDTO updatePatient(@PathVariable("email") String email, @RequestBody PatientCreateUpdateDTO patientDTO) {
-        return patientService.updatePatient(email, patientDTO);
+    @PutMapping("/{id}")
+    public PatientDTO updatePatient(@PathVariable("id") Long id, @RequestBody PatientCreateUpdateDTO patientDTO) {
+        return patientService.updatePatient(id, patientDTO);
     }
 
-    @PatchMapping("/{email}")
-    public PatientDTO updatePassword(@PathVariable("email") String email, @RequestBody ChangePasswordCommandDTO changePasswordCommandDTO) {
-        return patientService.updatePassword(email, changePasswordCommandDTO);
+    @PatchMapping("/{id}")
+    public PatientDTO updatePassword(@PathVariable("id") Long id, @RequestBody ChangePasswordCommandDTO changePasswordCommandDTO) {
+        return patientService.updatePassword(id, changePasswordCommandDTO);
+    }
+
+    @GetMapping(params = "date")
+    public List<PatientDTO> getPatientsWithVisitFromDate(@RequestParam LocalDate date){
+        return patientService.getPatientWithVisitFromDate(date);
     }
 }

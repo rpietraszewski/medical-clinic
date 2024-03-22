@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: Robert
+      changes:
+        - createTable:
+            tableName: visit
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_visit_id
+              - column:
+                  name: start_date_time
+                  type: datetime
+              - column:
+                  name: end_date_time
+                  type: datetime
+              - column:
+                  name: institution_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_visit_institution_id
+                    references: institution(id)
+              - column:
+                  name: doctor_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_visit_doctor_id
+                    references: doctor(id)
+              - column:
+                  name: patient_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_visit_patient_id
+                    references: patient(id)

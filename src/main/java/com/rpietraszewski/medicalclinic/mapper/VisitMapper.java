@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 public interface VisitMapper {
     @Mapping(source = "doctor.email", target = "doctorEmail")
     @Mapping(source = "institution.id", target = "institution")
-    @Mapping(source = "patient.email", target = "patientEmail")
+    @Mapping(source = "patient.id", target = "patientId")
     VisitDTO toVisitDTO(Visit visit);
 
     @Mapping(source = "institution", target = "institution", ignore = true)

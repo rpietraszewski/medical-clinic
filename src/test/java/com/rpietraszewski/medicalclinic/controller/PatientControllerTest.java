@@ -2,7 +2,6 @@ package com.rpietraszewski.medicalclinic.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rpietraszewski.medicalclinic.TestDataFactory;
-import com.rpietraszewski.medicalclinic.model.dto.AssignInstitutionCommandDTO;
 import com.rpietraszewski.medicalclinic.model.dto.ChangePasswordCommandDTO;
 import com.rpietraszewski.medicalclinic.model.dto.PatientCreateUpdateDTO;
 import com.rpietraszewski.medicalclinic.model.dto.PatientDTO;
@@ -60,11 +59,11 @@ public class PatientControllerTest {
         when(patientService.getPatient(any())).thenReturn(patientDTO);
 
         //when && then
-        mockMvc.perform(MockMvcRequestBuilders.get("/patients/{email}", "patient@patient.pl")
+        mockMvc.perform(MockMvcRequestBuilders.get("/patients/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value(patientDTO.getEmail()));
+                .andExpect(jsonPath("$.id").value(patientDTO.getId()));
     }
 
     @Test
@@ -73,7 +72,7 @@ public class PatientControllerTest {
         PatientCreateUpdateDTO patientCreateUpdateDTO = TestDataFactory
                 .createPatientCreateUpdateDTO("patient@patient.pl", "idCardNo");
 
-        PatientDTO patientDTO = TestDataFactory.createPatientDTO("patient@patien.pl");
+        PatientDTO patientDTO = TestDataFactory.createPatientDTO("patient@patient.pl");
 
         when(patientService.createPatient(any())).thenReturn(patientDTO);
 
@@ -92,7 +91,7 @@ public class PatientControllerTest {
         doNothing().when(patientService).deletePatient(any());
 
         //when && then
-        mockMvc.perform(MockMvcRequestBuilders.delete("/patients/{email}", "patient@patien.pl")
+        mockMvc.perform(MockMvcRequestBuilders.delete("/patients/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
@@ -109,12 +108,12 @@ public class PatientControllerTest {
         when(patientService.updatePatient(any(), any())).thenReturn(patientDTO);
 
         //when && then
-        mockMvc.perform(MockMvcRequestBuilders.put("/patients/{email}", "patient@patient.pl")
+        mockMvc.perform(MockMvcRequestBuilders.put("/patients/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(patientCreateUpdateDTO)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value(patientDTO.getEmail()));
+                .andExpect(jsonPath("$.id").value(patientDTO.getId()));
     }
 
     @Test
@@ -129,11 +128,11 @@ public class PatientControllerTest {
         when(patientService.updatePassword(any(), any())).thenReturn(patientDTO);
 
         //when && then
-        mockMvc.perform(MockMvcRequestBuilders.patch("/patients/{email}", "patient@patient.pl")
+        mockMvc.perform(MockMvcRequestBuilders.patch("/patients/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(changePasswordCommandDTO)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value(patientDTO.getEmail()));
+                .andExpect(jsonPath("$.id").value(patientDTO.getId()));
     }
 }
